@@ -1,6 +1,7 @@
 import './index.css'
 import vocaburaries from './vocaburaries/vocaburaries'
 import useMode from './hooks/useMode'
+import { Vocaburary, Card, Lang, Mode } from './models/models'
 
 function App() {
   const {
@@ -11,7 +12,6 @@ function App() {
     askLang,
     currentCard,
     ansLang,
-    askedCards,
     setNextCard,
   } = useMode()
 
@@ -43,27 +43,29 @@ function App() {
           <div className="flex-row">
             <button
               className={`selectorButton ${
-                mode === 'STUDY' && 'button_active'
+                mode === Mode.STUDY && 'button_active'
               }`}
               id="studyButton"
-              onClick={() => setMode('STUDY')}
+              onClick={() => setMode(Mode.STUDY)}
             >
               Изучение
             </button>
             <button
-              className={`selectorButton ${mode === 'QUIZ' && 'button_active'}`}
+              className={`selectorButton ${
+                mode === Mode.QUIZ && 'button_active'
+              }`}
               id="surveyButton"
-              onClick={() => setMode('QUIZ')}
+              onClick={() => setMode(Mode.QUIZ)}
             >
               Опрос
             </button>
           </div>
           <div className="flex-row">
             <p className="card" id="questionCard">
-              {mode === 'STUDY' && currentCard[askLang]}
+              {mode === Mode.STUDY && currentCard[askLang]}
             </p>
             <p className="card" id="answerCard">
-              {mode === 'STUDY' && currentCard[ansLang]}
+              {mode === Mode.STUDY && currentCard[ansLang]}
             </p>
           </div>
           <div>
@@ -71,7 +73,7 @@ function App() {
               className="button"
               id="nextCardButton"
               onClick={() => {
-                if (mode === 'STUDY') setNextCard()
+                if (mode === Mode.STUDY) setNextCard()
               }}
             >
               Следующая карточка

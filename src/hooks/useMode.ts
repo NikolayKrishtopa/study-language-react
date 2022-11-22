@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import vocaburaries from '../vocaburaries/vocaburaries'
-import { Vocaburary, Card } from '../models/models'
+import { Vocaburary, Card, Lang, Mode } from '../models/models'
 
 export default function useMode() {
   const defaultCard = { id: 0, en: '', ru: '' }
-  const [mode, setMode] = useState<'STUDY' | 'QUIZ'>('STUDY')
+  const [mode, setMode] = useState<Mode>(Mode.STUDY)
   const [currentVoc, setCurrentVoc] = useState<Vocaburary>(vocaburaries[0])
-  const [askLang, setAskLang] = useState<'en' | 'ru'>('en')
+  const [askLang, setAskLang] = useState<Lang>(Lang.EN)
   const [currentCard, setCurrentCard] = useState<Card>(defaultCard)
-  const [ansLang, setAnsLang] = useState<'en' | 'ru'>('ru')
+  const [ansLang, setAnsLang] = useState<Lang>(Lang.RU)
   const [askedCards, setAskedCards] = useState<number[]>([])
 
   function reset() {
@@ -23,14 +23,14 @@ export default function useMode() {
 
   function toggleLang() {
     switch (askLang) {
-      case 'en': {
-        setAskLang('ru')
-        setAnsLang('en')
+      case Lang.EN: {
+        setAskLang(Lang.RU)
+        setAnsLang(Lang.EN)
         return
       }
-      case 'ru': {
-        setAskLang('en')
-        setAnsLang('ru')
+      case Lang.RU: {
+        setAskLang(Lang.EN)
+        setAnsLang(Lang.RU)
         return
       }
       default: {
