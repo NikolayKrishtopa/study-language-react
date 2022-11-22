@@ -1,4 +1,4 @@
-type card = {
+export type Card = {
   id: number
   en: string
   ru: string
@@ -6,5 +6,5 @@ type card = {
 
 export type Vocaburary = {
   id: number
-  cards: card[]
+  cards: Card[]
 }
