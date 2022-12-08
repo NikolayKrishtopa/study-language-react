@@ -39,12 +39,33 @@ export default function useMode() {
     }
   }
 
-  function setNextCard() {
-    function getRandomIndex(): number {
-      return Math.floor(Math.random() * currentVoc.cards.length)
-    }
-    setCurrentCard(currentVoc.cards[getRandomIndex()])
+  function getRandomIndex(): number {
+    return Math.floor(Math.random() * currentVoc.cards.length)
+  }
+  
+  function setCard(index:number) {
+    setCurrentCard(currentVoc.cards[index])
     toggleLang()
+  }
+
+  function setNextCard(mode: Mode) {
+    let index: number = getRandomIndex()
+    switch (mode) {
+      case Mode.QUIZ:
+        if (askedCards.length === currentVoc.cards.length) {return console.log('Опрос окончен')}
+        while (askedCards.includes(index)){
+          index = getRandomIndex()
+        }
+        setCard(index)
+        askedCards.push(index)
+        console.log(askedCards)
+        break;
+      case Mode.STUDY:
+        setCard(index)
+         break
+      default:
+        break;
+    }
   }
 
   return {

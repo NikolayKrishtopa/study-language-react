@@ -1,7 +1,8 @@
 import './index.css'
 import vocaburaries from './vocaburaries/vocaburaries'
 import useMode from './hooks/useMode'
-import { Vocaburary, Card, Lang, Mode } from './models/models'
+import { Mode } from './models/models'
+import { useEffect } from 'react'
 
 function App() {
   const {
@@ -14,11 +15,7 @@ function App() {
     ansLang,
     setNextCard,
   } = useMode()
-
-  // useEffect(() => {
-  //   console.log([mode, currentVoc, askLang, showNextCard()])
-  // }, [mode, currentVoc, askLang])
-
+  
   return (
     <div className="page">
       <header className="header">
@@ -73,7 +70,8 @@ function App() {
               className="button"
               id="nextCardButton"
               onClick={() => {
-                if (mode === Mode.STUDY) setNextCard()
+                // if (mode === Mode.STUDY) setNextCard(mode)
+             setNextCard(mode)
               }}
             >
               Следующая карточка
