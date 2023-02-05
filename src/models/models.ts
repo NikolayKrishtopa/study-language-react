@@ -15,5 +15,8 @@ export enum Lang {
 }
 export enum Mode {
   STUDY = 'study',
-  QUIZ = 'quiz',
+  QUIZ_QUESTION = 'quiz_question',
+  QUIZ_ANSWER_CORRECT = 'quiz_answer_correct',
+  QUIZ_ANSWER_INCORRECT = 'quiz_answer_incorrect',
+  QUIZ_RESULT = 'quiz_result',
 }

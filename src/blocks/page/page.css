@@ -1,0 +1,7 @@
+.page {
+  margin: auto;
+  max-width: 1200px;
+  display: grid;
+  grid-template-rows: 170px 1fr 170px;
+  height: 100vh;
+}

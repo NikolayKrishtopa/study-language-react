@@ -1,0 +1,27 @@
+.card {
+  background-color: transparent;
+  width: 100%;
+  min-height: 150px;
+  padding: 30px;
+  display: flex;
+  border: solid 3px rgb(197, 227, 230);
+  border-radius: 10px;
+  font-family: 'suisse', 'arial', sans-serif;
+  font-size: 40px;
+  color: rgb(197, 227, 230);
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  text-align: center;
+}
+.card_state_correct {
+  border: 5px solid green;
+  color: green;
+}
+.card_state_incorrect {
+  border: 5px solid red;
+  color: red;
+}
+.card:focus {
+  outline: none;
+}

@@ -1,0 +1,37 @@
+.button {
+  margin: 20px 5px;
+  /* display: block; */
+  width: 150px;
+  height: 50px;
+  font-size: 14px;
+  /*background-color: rgb(34, 137, 155);*/
+  background: transparent;
+  border: rgb(197, 227, 230) solid 2px;
+  font-family: 'suisse', 'arial', sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: rgb(197, 227, 230);
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.button_type_voc {
+  margin: 5px;
+  display: flex;
+  width: 50px;
+  height: 30px;
+  background-color: transparent;
+  border-radius: 5px;
+}
+.button_state_active {
+  background-color: orange;
+}
+.button:hover {
+  opacity: 0.8;
+}
+.button:active {
+  color: rgb(88, 154, 165);
+}
