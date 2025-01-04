@@ -1,8 +1,8 @@
-import './index.css'
-import vocaburaries from './vocaburaries/vocaburaries'
-import useMode from './hooks/useMode'
-import { Mode } from './models/models'
-import { useEffect } from 'react'
+import "./index.css";
+import vocaburaries from "./vocaburaries/vocaburaries";
+import useMode from "./hooks/useMode";
+import { Mode } from "./models/models";
+import Card from "./components/Card/Card";
 
 function App() {
   const {
@@ -20,7 +20,7 @@ function App() {
     setModalOpen,
     quizStatus,
     setQuizStatus,
-  } = useMode()
+  } = useMode();
 
   // useEffect(() => {
   //   const onEnter = (e: { keyCode: number }) => {
@@ -35,18 +35,18 @@ function App() {
   // }, [mode])
 
   return (
-    <div className='page'>
+    <div className="page">
       {modalOpen && <div>модальное окно открыто</div>}
-      <header className='header'>
-        <div className='overlay'></div>
+      <header className="header">
+        <div className="overlay"></div>
       </header>
-      <main className='content'>
+      <main className="content">
         <p>Выберите изучаемый словарь</p>
-        <div className='flex-row'>
+        <div className="flex-row">
           {vocaburaries.map((v, i) => (
             <button
               className={`button button_type_voc ${
-                currentVoc.id === v.id && 'button_state_active'
+                currentVoc.id === v.id && "button_state_active"
               }`}
               key={v.id}
               onClick={() => swithCurrentVoc(i)}
@@ -55,10 +55,10 @@ function App() {
             </button>
           ))}
         </div>
-        <div className='flex-row'>
+        <div className="flex-row">
           <button
-            className={`button ${mode === Mode.STUDY && 'button_state_active'}`}
-            id='studyButton'
+            className={`button ${mode === Mode.STUDY && "button_state_active"}`}
+            id="studyButton"
             onClick={() => setMode(Mode.STUDY)}
           >
             Изучение
@@ -68,68 +68,69 @@ function App() {
               (mode === Mode.QUIZ_QUESTION ||
                 mode === Mode.QUIZ_ANSWER_CORRECT ||
                 mode === Mode.QUIZ_ANSWER_INCORRECT) &&
-              'button_state_active'
+              "button_state_active"
             }`}
-            id='surveyButton'
+            id="surveyButton"
             onClick={() => setMode(Mode.QUIZ_QUESTION)}
           >
             Опрос
           </button>
         </div>
-        <div className='content__cards-container'>
-          <p className='card' id='questionCard'>
-            {currentCard[askLang]}
-          </p>
-          {mode === Mode.STUDY ||
-          mode === Mode.QUIZ_ANSWER_CORRECT ||
-          mode === Mode.QUIZ_ANSWER_INCORRECT ? (
-            <p
-              className={`${
-                mode === Mode.QUIZ_ANSWER_CORRECT && 'card_state_correct'
-              } ${
-                mode === Mode.QUIZ_ANSWER_INCORRECT && 'card_state_incorrect'
-              } card`}
-              id='answerCard'
-            >
-              {mode === Mode.STUDY && currentCard[ansLang]}
-              {(mode === Mode.QUIZ_ANSWER_CORRECT ||
-                mode === Mode.QUIZ_ANSWER_INCORRECT) &&
-                currentCard[ansLang]}
-            </p>
-          ) : (
-            <input
-              autoFocus
-              type='text'
-              className='card'
-              value={userAnswer}
-              onChange={(e: { target: { value: string } }) =>
-                setUserAnswer(e.target.value)
-              }
-            />
-          )}
+        <div className="content__cards-container">
+          <Card
+            value={currentCard[askLang]}
+            mode="text"
+            state="neutral"
+            id="questionCard"
+          />
+          <Card
+            value={
+              mode === Mode.STUDY ||
+              mode === Mode.QUIZ_ANSWER_CORRECT ||
+              mode === Mode.QUIZ_ANSWER_INCORRECT
+                ? currentCard[ansLang]
+                : userAnswer
+            }
+            mode={
+              mode === Mode.STUDY ||
+              mode === Mode.QUIZ_ANSWER_CORRECT ||
+              mode === Mode.QUIZ_ANSWER_INCORRECT
+                ? "text"
+                : "input"
+            }
+            inputHandler={(e) => setUserAnswer(e.currentTarget.value)}
+            state={
+              mode === Mode.QUIZ_ANSWER_CORRECT
+                ? "correct"
+                : mode === Mode.QUIZ_ANSWER_INCORRECT
+                ? "incorrect"
+                : "neutral"
+            }
+            id="answerCard"
+          />
         </div>
         <div>
           <button
-            className='button'
-            id='nextCardButton'
+            className="button"
+            id="nextCardButton"
             onClick={() => {
               // if (mode === Mode.STUDY) setNextCard(mode)
-              setNextCard(mode)
+              setNextCard(mode);
             }}
           >
             {mode === Mode.STUDY ||
             mode === Mode.QUIZ_ANSWER_CORRECT ||
             mode === Mode.QUIZ_ANSWER_INCORRECT
-              ? 'Следующая карточка'
-              : 'Проверить ответ'}
+              ? "Следующая карточка"
+              : "Проверить ответ"}
           </button>
         </div>
       </main>
-      <footer className='footer'>
-        <div className='overlay'></div>
+      <footer className="footer">
+        <div className="overlay"></div>
       </footer>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
