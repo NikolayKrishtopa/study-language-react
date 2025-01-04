@@ -3,6 +3,7 @@ import vocaburaries from "./vocaburaries/vocaburaries";
 import useMode from "./hooks/useMode";
 import { Mode } from "./models/models";
 import Card from "./components/Card/Card";
+import { ButtonSwitcher } from "./components/ButtonSwitcher/ButtonSwitcher";
 
 function App() {
   const {
@@ -42,40 +43,33 @@ function App() {
       </header>
       <main className="content">
         <p>Выберите изучаемый словарь</p>
-        <div className="flex-row">
-          {vocaburaries.map((v, i) => (
-            <button
-              className={`button button_type_voc ${
-                currentVoc.id === v.id && "button_state_active"
-              }`}
-              key={v.id}
-              onClick={() => swithCurrentVoc(i)}
-            >
-              {v.id}
-            </button>
-          ))}
-        </div>
-        <div className="flex-row">
-          <button
-            className={`button ${mode === Mode.STUDY && "button_state_active"}`}
-            id="studyButton"
-            onClick={() => setMode(Mode.STUDY)}
-          >
-            Изучение
-          </button>
-          <button
-            className={`button ${
-              (mode === Mode.QUIZ_QUESTION ||
-                mode === Mode.QUIZ_ANSWER_CORRECT ||
-                mode === Mode.QUIZ_ANSWER_INCORRECT) &&
-              "button_state_active"
-            }`}
-            id="surveyButton"
-            onClick={() => setMode(Mode.QUIZ_QUESTION)}
-          >
-            Опрос
-          </button>
-        </div>
+        <ButtonSwitcher
+          buttons={vocaburaries}
+          activeId={currentVoc.id}
+          additionalClass="button_type_voc"
+          switchHandler={(arg) => {
+            if (typeof arg !== "number") return;
+            swithCurrentVoc(arg);
+          }}
+        />
+        <ButtonSwitcher
+          buttons={[
+            { id: Mode.STUDY, text: "Изучение", value: Mode.STUDY },
+            {
+              id: Mode.QUIZ_QUESTION,
+              text: "Опрос",
+              value: Mode.QUIZ_QUESTION,
+            },
+          ]}
+          activeId={
+            mode === Mode.QUIZ_QUESTION ||
+            mode === Mode.QUIZ_ANSWER_CORRECT ||
+            mode === Mode.QUIZ_ANSWER_INCORRECT
+              ? Mode.QUIZ_QUESTION
+              : Mode.STUDY
+          }
+          switchHandler={setMode}
+        />
         <div className="content__cards-container">
           <Card
             value={currentCard[askLang]}

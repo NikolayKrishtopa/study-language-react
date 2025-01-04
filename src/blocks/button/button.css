@@ -7,7 +7,7 @@
   /*background-color: rgb(34, 137, 155);*/
   background: transparent;
   border: rgb(197, 227, 230) solid 2px;
-  font-family: 'suisse', 'arial', sans-serif;
+  font-family: "suisse", "arial", sans-serif;
   text-transform: uppercase;
   font-weight: bold;
   color: rgb(197, 227, 230);
@@ -20,7 +20,6 @@
 }
 .button_type_voc {
   margin: 5px;
-  display: flex;
   width: 50px;
   height: 30px;
   background-color: transparent;
