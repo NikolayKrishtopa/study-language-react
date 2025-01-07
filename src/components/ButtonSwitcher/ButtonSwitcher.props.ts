@@ -1,6 +1,6 @@
 export interface IButtonSwitcherProps {
-  switchHandler: (i: any) => void;
-  buttons: Array<any>;
+  switchHandler: (i: unknown) => void;
+  buttons: Array<unknown>;
   activeId?: number | string;
   additionalClass?: string;
 }

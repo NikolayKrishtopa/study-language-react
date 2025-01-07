@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import vocaburaries from "../vocaburaries/vocaburaries";
 import { Vocaburary, Card, Lang, Mode } from "../models/models";
 
