@@ -1,5 +1,6 @@
 import "../../index.css";
 import { IButtonSwitcherProps } from "./ButtonSwitcher.props";
+import cn from "classnames";
 
 export const ButtonSwitcher = ({
   switchHandler,
@@ -11,9 +12,9 @@ export const ButtonSwitcher = ({
     <div className="flex-row">
       {buttons.map((b, i) => (
         <button
-          className={`button ${additionalClass} ${
-            b.id === activeId && "button_state_active"
-          }`}
+          className={cn("button", additionalClass, {
+            button_state_active: b.id === activeId,
+          })}
           key={b.id}
           onClick={() => switchHandler(b.value || i)}
         >
