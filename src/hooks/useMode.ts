@@ -59,7 +59,7 @@ export default function useMode() {
   function setNextCard(mode: Mode) {
     let index: number = getRandomIndex();
     switch (mode) {
-      case Mode.QUIZ_ANSWER_CORRECT:
+      case Mode.EXAMINATION_ANSWER_CORRECT:
         if (askedCards.length === currentVoc.cards.length) {
           return console.log(
             `Опрос окончен. Ваш результат: ${
@@ -72,10 +72,10 @@ export default function useMode() {
         }
         setCard(index);
         setAskedCards((prev) => [...prev, index]);
-        setMode(Mode.QUIZ_QUESTION);
+        setMode(Mode.EXAMINATION_QUESTION);
         setUserAnswer("");
         break;
-      case Mode.QUIZ_ANSWER_INCORRECT:
+      case Mode.EXAMINATION_ANSWER_INCORRECT:
         if (askedCards.length === currentVoc.cards.length) {
           return console.log(
             `Опрос окончен. Ваш результат: ${
@@ -88,23 +88,23 @@ export default function useMode() {
         }
         setCard(index);
         setAskedCards((prev) => [...prev, index]);
-        setMode(Mode.QUIZ_QUESTION);
+        setMode(Mode.EXAMINATION_QUESTION);
         setUserAnswer("");
         break;
-      case Mode.QUIZ_QUESTION:
+      case Mode.EXAMINATION_QUESTION:
         if (
           userAnswer.length > 0 &&
           currentCard[ansLang].toLowerCase().includes(userAnswer.toLowerCase())
         ) {
-          setMode(Mode.QUIZ_ANSWER_CORRECT);
+          setMode(Mode.EXAMINATION_ANSWER_CORRECT);
           setQuizStatus((prev) => [...prev, true]);
         } else {
-          setMode(Mode.QUIZ_ANSWER_INCORRECT);
+          setMode(Mode.EXAMINATION_ANSWER_INCORRECT);
           setQuizStatus((prev) => [...prev, false]);
         }
 
         break;
-      case Mode.QUIZ_RESULT:
+      case Mode.EXAMINATION_RESULT:
         setCard(index);
         break;
       case Mode.STUDY:

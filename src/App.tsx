@@ -41,7 +41,7 @@ function App() {
   return (
     <div
       className={cn("page", {
-        page_correct: mode === Mode.QUIZ_ANSWER_CORRECT,
+        page_correct: mode === Mode.EXAMINATION_ANSWER_CORRECT,
       })}
     >
       {modalOpen && <div>модальное окно открыто</div>}
@@ -71,15 +71,24 @@ function App() {
           buttons={[
             { id: Mode.STUDY, text: "Изучение", value: Mode.STUDY },
             {
-              id: Mode.QUIZ_QUESTION,
+              id: Mode.EXAMINATION_QUESTION,
               text: "Опрос",
+              value: Mode.EXAMINATION_QUESTION,
+            },
+            {
+              id: Mode.QUIZ_QUESTION,
+              text: "Викторина",
               value: Mode.QUIZ_QUESTION,
             },
           ]}
           activeId={
-            mode === Mode.QUIZ_QUESTION ||
-            mode === Mode.QUIZ_ANSWER_CORRECT ||
-            mode === Mode.QUIZ_ANSWER_INCORRECT
+            mode === Mode.EXAMINATION_QUESTION ||
+            mode === Mode.EXAMINATION_ANSWER_CORRECT ||
+            mode === Mode.EXAMINATION_ANSWER_INCORRECT
+              ? Mode.EXAMINATION_QUESTION
+              : mode === Mode.QUIZ_QUESTION ||
+                mode === Mode.QUIZ_ANSWER_CORRECT ||
+                mode === Mode.QUIZ_ANSWER_INCORRECT
               ? Mode.QUIZ_QUESTION
               : Mode.STUDY
           }
@@ -97,23 +106,23 @@ function App() {
           <Card
             value={
               mode === Mode.STUDY ||
-              mode === Mode.QUIZ_ANSWER_CORRECT ||
-              mode === Mode.QUIZ_ANSWER_INCORRECT
+              mode === Mode.EXAMINATION_ANSWER_CORRECT ||
+              mode === Mode.EXAMINATION_ANSWER_INCORRECT
                 ? currentCard[ansLang]
                 : userAnswer
             }
             mode={
               mode === Mode.STUDY ||
-              mode === Mode.QUIZ_ANSWER_CORRECT ||
-              mode === Mode.QUIZ_ANSWER_INCORRECT
+              mode === Mode.EXAMINATION_ANSWER_CORRECT ||
+              mode === Mode.EXAMINATION_ANSWER_INCORRECT
                 ? "text"
                 : "input"
             }
             inputHandler={(e) => setUserAnswer(e.currentTarget.value)}
             state={
-              mode === Mode.QUIZ_ANSWER_CORRECT
+              mode === Mode.EXAMINATION_ANSWER_CORRECT
                 ? "correct"
-                : mode === Mode.QUIZ_ANSWER_INCORRECT
+                : mode === Mode.EXAMINATION_ANSWER_INCORRECT
                 ? "incorrect"
                 : "neutral"
             }
@@ -130,8 +139,8 @@ function App() {
             }}
           >
             {mode === Mode.STUDY ||
-            mode === Mode.QUIZ_ANSWER_CORRECT ||
-            mode === Mode.QUIZ_ANSWER_INCORRECT
+            mode === Mode.EXAMINATION_ANSWER_CORRECT ||
+            mode === Mode.EXAMINATION_ANSWER_INCORRECT
               ? "Следующая карточка"
               : "Проверить ответ"}
           </button>
