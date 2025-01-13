@@ -1,4 +1,4 @@
-import "./index.css";
+import "./index.scss";
 import vocaburaries from "./vocaburaries/vocaburaries";
 import useMode from "./hooks/useMode";
 import { Mode } from "./models/models";
@@ -47,7 +47,7 @@ function App() {
           buttons={vocaburaries}
           activeId={currentVoc.id}
           additionalClass="button_type_voc"
-          switchHandler={(arg) => {
+          switchHandler={(arg: any) => {
             if (typeof arg !== "number") return;
             swithCurrentVoc(arg);
           }}

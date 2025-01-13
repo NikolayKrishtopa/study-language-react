@@ -1,4 +1,4 @@
-import "../../index.css";
+import "../../index.scss";
 import { ICardProps } from "./Card.props";
 import cn from "classnames";
 

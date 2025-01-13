@@ -1,6 +1,7 @@
+@use "../../styles/globalVariables.scss" as *;
+
 .footer {
-  background-color: #475278;
-  background-image: url(../../../img/vladivostok.jpg);
+  background-color: $purple;
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;

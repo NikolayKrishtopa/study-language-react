@@ -1,7 +1,8 @@
+@use "../../styles/globalVariables.scss" as *;
+
 .header {
-  background-color: #475278;
-  background-image: url(../../../img/new_york.jpg);
-  background-repeat: no-repeat;
+  position: absolute;
+  background-color: $purple;
   background-size: cover;
   width: 100%;
 }

@@ -1,0 +1,51 @@
+$mid-gray: #c4c4c4;
+$dark-gray: #1e1e1e;
+$light-gray: #e5e4e4;
+$white: #ffffff;
+$purple: #6021b1;
+$pink: #a621b1;
+$success: #3ca33c;
+$success-hover: #398639;
+$success-pressed: #266626;
+$failure: #ea9700;
+$black: #000000;
+
+$font-family: "Mont";
+
+$breakpointDesktop: 1300px;
+$breakpointTablet: 800px;
+$breakpointMobile: 675px;
+$breakpointMobileSmall: 500px;
+
+@mixin title($color) {
+  margin: 0;
+  color: $color;
+  font-family: $font-family;
+  font-size: 6em;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.04em;
+  text-align: left;
+  text-transform: uppercase;
+  font-style: italic;
+  @media (max-width: 1500px) {
+    font-size: 80px;
+    line-height: 90px;
+  }
+  @media (max-width: $breakpointDesktop) {
+    font-size: 60px;
+    line-height: 70px;
+  }
+  @media (max-width: $breakpointTablet) {
+    font-size: 50px;
+    line-height: 60px;
+  }
+  @media (max-width: $breakpointMobile) {
+    font-size: 40px;
+    line-height: 49px;
+  }
+  @media (max-width: 360px) {
+    font-size: 30px;
+    line-height: 40px;
+  }
+}
