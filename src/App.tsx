@@ -1,9 +1,12 @@
 import "./index.scss";
+import "../public/vendor/fonts/fonts.scss";
 import vocaburaries from "./vocaburaries/vocaburaries";
 import useMode from "./hooks/useMode";
-import { Mode } from "./models/models";
+import { Lang, Mode } from "./models/models";
 import Card from "./components/Card/Card";
 import { ButtonSwitcher } from "./components/ButtonSwitcher/ButtonSwitcher";
+import cn from "classnames";
+import Annotation from "./components/Annotation/Annotation";
 
 function App() {
   const {
@@ -36,12 +39,24 @@ function App() {
   // }, [mode])
 
   return (
-    <div className="page">
+    <div
+      className={cn("page", {
+        page_correct: mode === Mode.QUIZ_ANSWER_CORRECT,
+      })}
+    >
       {modalOpen && <div>модальное окно открыто</div>}
       <header className="header">
-        <div className="overlay"></div>
+        <p className="header__title">Study language</p>
       </header>
       <main className="content">
+        {mode !== Mode.STUDY && (
+          <Annotation
+            prefixText={`Переведите на ${
+              askLang === Lang.RU ? "английский" : "русский"
+            } язык ...`}
+            mainText={currentCard[askLang]}
+          />
+        )}
         <p>Выберите изучаемый словарь</p>
         <ButtonSwitcher
           buttons={vocaburaries}
@@ -71,12 +86,14 @@ function App() {
           switchHandler={setMode}
         />
         <div className="content__cards-container">
-          <Card
-            value={currentCard[askLang]}
-            mode="text"
-            state="neutral"
-            id="questionCard"
-          />
+          {mode === Mode.STUDY && (
+            <Card
+              value={currentCard[askLang]}
+              mode="text"
+              state="neutral"
+              id="questionCard"
+            />
+          )}
           <Card
             value={
               mode === Mode.STUDY ||

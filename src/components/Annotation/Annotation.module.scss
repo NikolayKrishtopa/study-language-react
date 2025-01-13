@@ -1,0 +1,25 @@
+@use "../../styles/globalVariables.scss" as *;
+
+.annotaion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.prefixText {
+  font-family: "Pacifico";
+  color: $black;
+  font-size: 28px;
+  line-height: 52px;
+  text-align: center;
+}
+.mainText {
+  font-family: "Sniglet";
+  text-transform: uppercase;
+  color: $black;
+  font-size: 48px;
+  line-height: 64px;
+  text-align: center;
+  &_scss {
+    color: $success;
+  }
+}

@@ -1,6 +1,12 @@
+@use "../../styles/globalVariables.scss" as *;
+
 .page {
   position: relative;
+  background-color: $white;
   margin: auto;
-  max-width: 1200px;
   height: 100vh;
+  overflow: hidden;
+  &_correct {
+    background-color: $success-light;
+  }
 }

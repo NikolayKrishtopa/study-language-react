@@ -1,27 +1,27 @@
+@use "../../styles/globalVariables.scss" as *;
+
 .card {
-  background-color: transparent;
+  background-color: $mid-gray;
   width: 100%;
-  min-height: 150px;
+  height: 260px;
   padding: 30px;
   display: flex;
-  border: solid 3px rgb(197, 227, 230);
-  border-radius: 10px;
-  font-family: 'suisse', 'arial', sans-serif;
+  border-radius: 16px;
+  font-family: "suisse", "arial", sans-serif;
   font-size: 40px;
-  color: rgb(197, 227, 230);
+  color: $purple;
   align-items: center;
   justify-content: center;
   text-transform: uppercase;
   text-align: center;
+  outline: none;
+  border: none;
 }
 .card_state_correct {
-  border: 5px solid green;
-  color: green;
+  border: 10px solid $success;
+  color: $success;
 }
 .card_state_incorrect {
-  border: 5px solid red;
-  color: red;
-}
-.card:focus {
-  outline: none;
+  border: 5px solid $failure;
+  color: $failure;
 }
