@@ -1,3 +1,5 @@
+@use "../../styles/globalVariables.scss" as *;
+
 .button {
   margin: 20px 5px;
   /* display: block; */
@@ -6,11 +8,11 @@
   font-size: 14px;
   /*background-color: rgb(34, 137, 155);*/
   background: transparent;
-  border: rgb(197, 227, 230) solid 2px;
+  border: $purple solid 2px;
   font-family: "suisse", "arial", sans-serif;
   text-transform: uppercase;
   font-weight: bold;
-  color: rgb(197, 227, 230);
+  color: $purple;
   border-radius: 5px;
   text-align: center;
   cursor: pointer;
@@ -22,11 +24,10 @@
   margin: 5px;
   width: 50px;
   height: 30px;
-  background-color: transparent;
-  border-radius: 5px;
 }
 .button_state_active {
-  background-color: orange;
+  background-color: $purple;
+  color: $white;
 }
 .button:hover {
   opacity: 0.8;
