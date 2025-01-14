@@ -8,6 +8,8 @@ import { ButtonSwitcher } from "./components/ButtonSwitcher/ButtonSwitcher";
 import cn from "classnames";
 import Annotation from "./components/Annotation/Annotation";
 import { Header } from "./components/Header/Header";
+import { Popup } from "./components/Popup/Popup";
+import { useState } from "react";
 
 function App() {
   const {
@@ -23,6 +25,12 @@ function App() {
     setUserAnswer,
     modalOpen,
   } = useMode();
+
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
 
   // useEffect(() => {
   //   const onEnter = (e: { keyCode: number }) => {
@@ -43,7 +51,48 @@ function App() {
       })}
     >
       {modalOpen && <div>модальное окно открыто</div>}
-      <Header />
+      <Popup isOpen={menuOpen}>
+        <>
+          <p>Выберите изучаемый словарь</p>
+          <ButtonSwitcher
+            buttons={vocaburaries}
+            activeId={currentVoc.id}
+            additionalClass="button_type_voc"
+            switchHandler={(arg: any) => {
+              if (typeof arg !== "number") return;
+              swithCurrentVoc(arg);
+            }}
+          />
+          <ButtonSwitcher
+            buttons={[
+              { id: Mode.STUDY, text: "Изучение", value: Mode.STUDY },
+              {
+                id: Mode.EXAMINATION_QUESTION,
+                text: "Опрос",
+                value: Mode.EXAMINATION_QUESTION,
+              },
+              {
+                id: Mode.QUIZ_QUESTION,
+                text: "Тест",
+                value: Mode.QUIZ_QUESTION,
+              },
+            ]}
+            activeId={
+              mode === Mode.EXAMINATION_QUESTION ||
+              mode === Mode.EXAMINATION_ANSWER_CORRECT ||
+              mode === Mode.EXAMINATION_ANSWER_INCORRECT
+                ? Mode.EXAMINATION_QUESTION
+                : mode === Mode.QUIZ_QUESTION ||
+                  mode === Mode.QUIZ_ANSWER_CORRECT ||
+                  mode === Mode.QUIZ_ANSWER_INCORRECT
+                ? Mode.QUIZ_QUESTION
+                : Mode.STUDY
+            }
+            switchHandler={setMode}
+          />
+        </>
+      </Popup>
+      <Header onClickHandler={toggleMenu} isMenuShown={menuOpen} />
       <main className="content">
         <Annotation
           prefixText={
@@ -56,43 +105,6 @@ function App() {
           mainText={mode === Mode.STUDY ? "" : currentCard[askLang]}
         />
 
-        <p>Выберите изучаемый словарь</p>
-        <ButtonSwitcher
-          buttons={vocaburaries}
-          activeId={currentVoc.id}
-          additionalClass="button_type_voc"
-          switchHandler={(arg: any) => {
-            if (typeof arg !== "number") return;
-            swithCurrentVoc(arg);
-          }}
-        />
-        <ButtonSwitcher
-          buttons={[
-            { id: Mode.STUDY, text: "Изучение", value: Mode.STUDY },
-            {
-              id: Mode.EXAMINATION_QUESTION,
-              text: "Опрос",
-              value: Mode.EXAMINATION_QUESTION,
-            },
-            {
-              id: Mode.QUIZ_QUESTION,
-              text: "Викторина",
-              value: Mode.QUIZ_QUESTION,
-            },
-          ]}
-          activeId={
-            mode === Mode.EXAMINATION_QUESTION ||
-            mode === Mode.EXAMINATION_ANSWER_CORRECT ||
-            mode === Mode.EXAMINATION_ANSWER_INCORRECT
-              ? Mode.EXAMINATION_QUESTION
-              : mode === Mode.QUIZ_QUESTION ||
-                mode === Mode.QUIZ_ANSWER_CORRECT ||
-                mode === Mode.QUIZ_ANSWER_INCORRECT
-              ? Mode.QUIZ_QUESTION
-              : Mode.STUDY
-          }
-          switchHandler={setMode}
-        />
         <div className="content__cards-container">
           {mode === Mode.STUDY && (
             <Card

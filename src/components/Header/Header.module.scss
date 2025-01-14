@@ -18,13 +18,29 @@
   padding-bottom: 100px;
   padding-left: 100px;
 }
-header__title {
+.header__title {
   font-family: "Pacifico";
   color: $white;
   font-size: 40px;
 }
+.header__menuBtn {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 3;
+}
+
 @media (max-height: 800px) {
   .header {
     height: 0;
   }
+}
+.headerBtnImage {
+  transition: transform 0.3s linear;
+}
+.headerBtnImageActivated {
+  transform: rotate(90deg);
 }
