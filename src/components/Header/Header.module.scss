@@ -1,28 +1,30 @@
 @use "../../styles/globalVariables.scss" as *;
 
-.footer {
-  width: 800px;
+.header {
+  position: static;
+}
+.header__round {
+  width: 600px;
   height: 600px;
   border-radius: 50%;
   position: absolute;
   background-color: $purple;
   background-size: cover;
-  bottom: -400px;
-  right: -100px;
+  top: -400px;
+  left: -200px;
   display: flex;
   justify-content: center;
   align-items: flex-end;
   padding-bottom: 100px;
   padding-left: 100px;
-
-  &__title {
-    font-family: "Pacifico";
-    color: $white;
-    font-size: 40px;
-  }
+}
+header__title {
+  font-family: "Pacifico";
+  color: $white;
+  font-size: 40px;
 }
 @media (max-height: 800px) {
-  .footer {
+  .header {
     height: 0;
   }
 }

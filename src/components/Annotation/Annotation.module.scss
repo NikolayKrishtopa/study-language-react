@@ -4,7 +4,9 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  max-width: 800px;
 }
+
 .prefixText {
   font-family: "Pacifico";
   color: $black;

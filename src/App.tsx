@@ -7,6 +7,7 @@ import Card from "./components/Card/Card";
 import { ButtonSwitcher } from "./components/ButtonSwitcher/ButtonSwitcher";
 import cn from "classnames";
 import Annotation from "./components/Annotation/Annotation";
+import { Header } from "./components/Header/Header";
 
 function App() {
   const {
@@ -21,9 +22,6 @@ function App() {
     userAnswer,
     setUserAnswer,
     modalOpen,
-    setModalOpen,
-    quizStatus,
-    setQuizStatus,
   } = useMode();
 
   // useEffect(() => {
@@ -45,18 +43,19 @@ function App() {
       })}
     >
       {modalOpen && <div>модальное окно открыто</div>}
-      <header className="header">
-        <p className="header__title">Study language</p>
-      </header>
+      <Header />
       <main className="content">
-        {mode !== Mode.STUDY && (
-          <Annotation
-            prefixText={`Переведите на ${
-              askLang === Lang.RU ? "английский" : "русский"
-            } язык ...`}
-            mainText={currentCard[askLang]}
-          />
-        )}
+        <Annotation
+          prefixText={
+            mode === Mode.STUDY
+              ? "Постарайтесь запомнить как можно больше слов"
+              : `Переведите на ${
+                  askLang === Lang.RU ? "английский" : "русский"
+                } язык ...`
+          }
+          mainText={mode === Mode.STUDY ? "" : currentCard[askLang]}
+        />
+
         <p>Выберите изучаемый словарь</p>
         <ButtonSwitcher
           buttons={vocaburaries}

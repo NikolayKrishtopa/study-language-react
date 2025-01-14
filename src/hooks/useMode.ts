@@ -11,13 +11,11 @@ export default function useMode() {
     return Math.floor(Math.random() * currentVoc.cards.length);
   }
   const initialIndex = getRandomIndex();
-  const defaultCard = {
-    id: initialIndex,
-    en: currentVoc.cards[initialIndex].en,
-    ru: currentVoc.cards[initialIndex].ru,
-  };
+
   const [askLang, setAskLang] = useState<Lang>(Lang.EN);
-  const [currentCard, setCurrentCard] = useState<Card>(defaultCard);
+  const [currentCard, setCurrentCard] = useState<Card>(
+    currentVoc.cards[initialIndex]
+  );
   const [ansLang, setAnsLang] = useState<Lang>(Lang.RU);
   const [askedCards, setAskedCards] = useState<number[]>([]);
   const [userAnswer, setUserAnswer] = useState<string>("");
@@ -25,7 +23,7 @@ export default function useMode() {
 
   function reset() {
     setAskedCards([]);
-    setCurrentCard(defaultCard);
+    setCurrentCard(currentVoc.cards[initialIndex]);
   }
 
   function swithCurrentVoc(vocNum: number) {
