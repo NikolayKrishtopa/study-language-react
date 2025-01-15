@@ -13,6 +13,8 @@
   width: 100%;
   display: flex;
   gap: 30px;
+  max-width: 1200px;
+  flex-wrap: wrap;
 }
 @media (max-height: 800px) {
   .content {

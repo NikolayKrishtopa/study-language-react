@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import vocaburaries from "../vocaburaries/vocaburaries";
 import { Vocaburary, Card, Lang, Mode } from "../models/models";
 
@@ -16,10 +16,46 @@ export default function useMode() {
   const [currentCard, setCurrentCard] = useState<Card>(
     currentVoc.cards[initialIndex]
   );
+  const [cardsArr, setCardsArr] = useState<Array<Card>>([]);
   const [ansLang, setAnsLang] = useState<Lang>(Lang.RU);
   const [askedCards, setAskedCards] = useState<number[]>([]);
   const [userAnswer, setUserAnswer] = useState<string>("");
-  const [quizStatus, setQuizStatus] = useState<boolean[]>([]);
+  const [examinationStatus, setExaminationStatus] = useState<boolean[]>([]);
+  const [queezeStatus, setQueezeStatus] = useState<boolean[]>([]);
+  const [wrongClicked, setWrongClicked] = useState<Array<Number>>([]);
+
+  function addElemIntoArrWithRandomIndex(arr: Array<Card>, elem: Card) {
+    const index = Math.floor(Math.random() * arr.length);
+    const resultArr = [...arr.slice(0, index), elem, ...arr.slice(index)];
+
+    return resultArr;
+  }
+
+  function createCardArr() {
+    const supplCards = Array();
+    while (supplCards.length < 3) {
+      const card = currentVoc.cards[getRandomIndex()];
+      if (
+        card.id === currentCard.id ||
+        supplCards.some((e) => e.id === card.id)
+      )
+        return;
+      supplCards.push(card);
+    }
+    setCardsArr(addElemIntoArrWithRandomIndex(supplCards, currentCard));
+  }
+
+  useEffect(() => {
+    console.log(mode);
+
+    if (mode !== Mode.QUIZ_QUESTION) return;
+    createCardArr();
+  }, [mode]);
+
+  useEffect(() => {
+    if (mode !== Mode.QUIZ_QUESTION) return;
+    goAhead();
+  }, [userAnswer]);
 
   function reset() {
     setAskedCards([]);
@@ -54,14 +90,14 @@ export default function useMode() {
     toggleLang();
   }
 
-  function setNextCard(mode: Mode) {
+  function goAhead() {
     let index: number = getRandomIndex();
     switch (mode) {
       case Mode.EXAMINATION_ANSWER_CORRECT:
         if (askedCards.length === currentVoc.cards.length) {
           return console.log(
             `Опрос окончен. Ваш результат: ${
-              quizStatus.filter((e) => !!e).length
+              examinationStatus.filter((e) => !!e).length
             } слов из ${currentVoc.cards.length}`
           );
         }
@@ -77,7 +113,7 @@ export default function useMode() {
         if (askedCards.length === currentVoc.cards.length) {
           return console.log(
             `Опрос окончен. Ваш результат: ${
-              quizStatus.filter((e) => !!e).length
+              examinationStatus.filter((e) => !!e).length
             } слов из ${currentVoc.cards.length}`
           );
         }
@@ -95,14 +131,56 @@ export default function useMode() {
           currentCard[ansLang].toLowerCase().includes(userAnswer.toLowerCase())
         ) {
           setMode(Mode.EXAMINATION_ANSWER_CORRECT);
-          setQuizStatus((prev) => [...prev, true]);
+          setExaminationStatus((prev) => [...prev, true]);
         } else {
           setMode(Mode.EXAMINATION_ANSWER_INCORRECT);
-          setQuizStatus((prev) => [...prev, false]);
+          setExaminationStatus((prev) => [...prev, false]);
         }
 
         break;
+
+      case Mode.QUIZ_ANSWER_CORRECT:
+        if (askedCards.length === currentVoc.cards.length) {
+          return console.log(
+            `Опрос окончен. Ваш результат: ${
+              queezeStatus.filter((e) => !!e).length
+            } слов из ${currentVoc.cards.length}`
+          );
+        }
+        while (askedCards.includes(index)) {
+          index = getRandomIndex();
+        }
+
+        setCard(index);
+        setAskedCards((prev) => [...prev, index]);
+        setMode(Mode.QUIZ_QUESTION);
+        setUserAnswer("");
+        setWrongClicked([]);
+        break;
+
+      case Mode.QUIZ_QUESTION:
+        if (
+          userAnswer.length > 0 &&
+          currentCard[ansLang].toLowerCase().includes(userAnswer.toLowerCase())
+        ) {
+          setMode(Mode.QUIZ_ANSWER_CORRECT);
+          setQueezeStatus((prev) => [...prev, true]);
+        } else {
+          const clicked = cardsArr.find(
+            (e) => e[ansLang].toLowerCase() === userAnswer
+          );
+          if (!!clicked) {
+            setWrongClicked((prev) => [...prev, clicked.id]);
+          }
+          setQueezeStatus((prev) => [...prev, false]);
+        }
+
+        break;
+
       case Mode.EXAMINATION_RESULT:
+        setCard(index);
+        break;
+      case Mode.QUIZ_RESULT:
         setCard(index);
         break;
       case Mode.STUDY:
@@ -122,12 +200,13 @@ export default function useMode() {
     currentCard,
     ansLang,
     askedCards,
-    setNextCard,
+    goAhead,
     userAnswer,
     setUserAnswer,
     modalOpen,
     setModalOpen,
-    quizStatus,
-    setQuizStatus,
+    examinationStatus,
+    cardsArr,
+    wrongClicked,
   };
 }

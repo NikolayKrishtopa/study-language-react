@@ -2,8 +2,8 @@
 
 .card {
   background-color: $mid-gray;
-  width: 100%;
-  height: 260px;
+  width: calc(50% - 30px);
+  height: 200px;
   padding: 30px;
   display: flex;
   border-radius: 16px;
@@ -17,11 +17,21 @@
   outline: none;
   border: none;
 }
+.card_text_s {
+  font-size: 30px;
+}
 .card_state_correct {
   border: 10px solid $success;
   color: $success;
 }
 .card_state_incorrect {
-  border: 5px solid $failure;
+  border: 10px solid $failure;
   color: $failure;
+}
+.card_type_button {
+  cursor: pointer;
+}
+
+.card_type_button:hover {
+  background-color: $light-gray;
 }

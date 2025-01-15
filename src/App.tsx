@@ -20,10 +20,12 @@ function App() {
     askLang,
     currentCard,
     ansLang,
-    setNextCard,
+    goAhead,
     userAnswer,
     setUserAnswer,
     modalOpen,
+    cardsArr,
+    wrongClicked,
   } = useMode();
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -35,7 +37,7 @@ function App() {
   // useEffect(() => {
   //   const onEnter = (e: { keyCode: number }) => {
   //     if (e.keyCode === 13) {
-  //       setNextCard(mode)
+  //       goAhead()
   //     }
   //   }
   //   window.addEventListener('keyup', onEnter)
@@ -98,6 +100,8 @@ function App() {
           prefixText={
             mode === Mode.STUDY
               ? "Постарайтесь запомнить как можно больше слов"
+              : mode === Mode.QUIZ_QUESTION || mode === Mode.QUIZ_ANSWER_CORRECT
+              ? "Выберите правильный вариант перевода ..."
               : `Переведите на ${
                   askLang === Lang.RU ? "английский" : "русский"
                 } язык ...`
@@ -114,47 +118,72 @@ function App() {
               id="questionCard"
             />
           )}
-          <Card
-            value={
-              mode === Mode.STUDY ||
-              mode === Mode.EXAMINATION_ANSWER_CORRECT ||
-              mode === Mode.EXAMINATION_ANSWER_INCORRECT
-                ? currentCard[ansLang]
-                : userAnswer
-            }
-            mode={
-              mode === Mode.STUDY ||
-              mode === Mode.EXAMINATION_ANSWER_CORRECT ||
-              mode === Mode.EXAMINATION_ANSWER_INCORRECT
-                ? "text"
-                : "input"
-            }
-            inputHandler={(e) => setUserAnswer(e.currentTarget.value)}
-            state={
-              mode === Mode.EXAMINATION_ANSWER_CORRECT
-                ? "correct"
-                : mode === Mode.EXAMINATION_ANSWER_INCORRECT
-                ? "incorrect"
-                : "neutral"
-            }
-            id="answerCard"
-          />
+          {mode === Mode.QUIZ_ANSWER_CORRECT ||
+          mode === Mode.QUIZ_ANSWER_INCORRECT ||
+          mode === Mode.QUIZ_QUESTION ? (
+            <>
+              {cardsArr.map((e) => (
+                <Card
+                  key={e.id}
+                  value={e[ansLang]}
+                  mode={mode === Mode.QUIZ_QUESTION ? "button" : "text"}
+                  state={
+                    wrongClicked.includes(e.id)
+                      ? "incorrect"
+                      : mode === Mode.QUIZ_ANSWER_CORRECT &&
+                        userAnswer.toLowerCase() === e[ansLang]
+                      ? "correct"
+                      : "neutral"
+                  }
+                  clickHandler={() => setUserAnswer(e[ansLang])}
+                />
+              ))}
+            </>
+          ) : (
+            <Card
+              value={
+                mode === Mode.STUDY ||
+                mode === Mode.EXAMINATION_ANSWER_CORRECT ||
+                mode === Mode.EXAMINATION_ANSWER_INCORRECT
+                  ? currentCard[ansLang]
+                  : userAnswer
+              }
+              mode={
+                mode === Mode.STUDY ||
+                mode === Mode.EXAMINATION_ANSWER_CORRECT ||
+                mode === Mode.EXAMINATION_ANSWER_INCORRECT
+                  ? "text"
+                  : "input"
+              }
+              inputHandler={(e) => setUserAnswer(e.currentTarget.value)}
+              state={
+                mode === Mode.EXAMINATION_ANSWER_CORRECT
+                  ? "correct"
+                  : mode === Mode.EXAMINATION_ANSWER_INCORRECT
+                  ? "incorrect"
+                  : "neutral"
+              }
+              id="answerCard"
+            />
+          )}
         </div>
         <div>
-          <button
-            className="button"
-            id="nextCardButton"
-            onClick={() => {
-              // if (mode === Mode.STUDY) setNextCard(mode)
-              setNextCard(mode);
-            }}
-          >
-            {mode === Mode.STUDY ||
-            mode === Mode.EXAMINATION_ANSWER_CORRECT ||
-            mode === Mode.EXAMINATION_ANSWER_INCORRECT
-              ? "Следующая карточка"
-              : "Проверить ответ"}
-          </button>
+          {mode !== Mode.QUIZ_ANSWER_INCORRECT &&
+            mode !== Mode.QUIZ_QUESTION && (
+              <button
+                className="button"
+                id="nextCardButton"
+                onClick={() => {
+                  goAhead();
+                }}
+              >
+                {mode === Mode.STUDY ||
+                mode === Mode.EXAMINATION_ANSWER_CORRECT ||
+                mode === Mode.EXAMINATION_ANSWER_INCORRECT
+                  ? "Следующая карточка"
+                  : "Проверить ответ"}
+              </button>
+            )}
         </div>
       </main>
       <footer className="footer">
