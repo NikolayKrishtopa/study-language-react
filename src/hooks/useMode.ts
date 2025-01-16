@@ -46,8 +46,6 @@ export default function useMode() {
   }
 
   useEffect(() => {
-    console.log(mode);
-
     if (mode !== Mode.QUIZ_QUESTION) return;
     createCardArr();
   }, [mode]);

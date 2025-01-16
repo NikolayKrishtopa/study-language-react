@@ -49,7 +49,9 @@ function App() {
   return (
     <div
       className={cn("page", {
-        page_correct: mode === Mode.EXAMINATION_ANSWER_CORRECT,
+        page_correct:
+          mode === Mode.EXAMINATION_ANSWER_CORRECT ||
+          mode === Mode.QUIZ_ANSWER_CORRECT,
       })}
     >
       {modalOpen && <div>модальное окно открыто</div>}
