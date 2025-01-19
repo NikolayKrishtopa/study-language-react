@@ -7,22 +7,29 @@ export default function useMode() {
   const [currentVoc, setCurrentVoc] = useState<Vocaburary>(vocaburaries[0]);
   const [modalOpen, setModalOpen] = useState(false);
 
-  function getRandomIndex(): number {
-    return Math.floor(Math.random() * currentVoc.cards.length);
+  function getRandomArrElement(
+    arr: Array<Card>,
+    elementsToExclude?: Array<Card>
+  ): Card {
+    const unusedCards = arr.filter(
+      (el) => !elementsToExclude?.some((e) => e.id === el.id)
+    );
+    const randomCard =
+      unusedCards[Math.floor(Math.random() * unusedCards.length)];
+    return randomCard;
   }
-  const initialIndex = getRandomIndex();
 
   const [askLang, setAskLang] = useState<Lang>(Lang.EN);
-  const [currentCard, setCurrentCard] = useState<Card>(
-    currentVoc.cards[initialIndex]
-  );
-  const [cardsArr, setCardsArr] = useState<Array<Card>>([]);
+  const [cardsArrForQuiz, setCardsArr] = useState<Array<Card>>([]);
   const [ansLang, setAnsLang] = useState<Lang>(Lang.RU);
-  const [askedCards, setAskedCards] = useState<number[]>([]);
+  const [askedCards, setAskedCards] = useState<Card[]>([]);
   const [userAnswer, setUserAnswer] = useState<string>("");
   const [examinationStatus, setExaminationStatus] = useState<boolean[]>([]);
   const [queezeStatus, setQueezeStatus] = useState<boolean[]>([]);
   const [wrongClicked, setWrongClicked] = useState<Array<Number>>([]);
+  const [currentCard, setCurrentCard] = useState<Card>(
+    getRandomArrElement(currentVoc.cards, askedCards)
+  );
 
   function addElemIntoArrWithRandomIndex(arr: Array<Card>, elem: Card) {
     const index = Math.floor(Math.random() * arr.length);
@@ -31,10 +38,10 @@ export default function useMode() {
     return resultArr;
   }
 
-  function createCardArr() {
+  function createCardsArrForQuiz() {
     const supplCards = Array();
     while (supplCards.length < 3) {
-      const card = currentVoc.cards[getRandomIndex()];
+      const card = getRandomArrElement(currentVoc.cards, askedCards);
       if (
         card.id === currentCard.id ||
         supplCards.some((e) => e.id === card.id)
@@ -47,7 +54,7 @@ export default function useMode() {
 
   useEffect(() => {
     if (mode !== Mode.QUIZ_QUESTION) return;
-    createCardArr();
+    createCardsArrForQuiz();
   }, [mode]);
 
   useEffect(() => {
@@ -57,7 +64,7 @@ export default function useMode() {
 
   function reset() {
     setAskedCards([]);
-    setCurrentCard(currentVoc.cards[initialIndex]);
+    setCurrentCard(getRandomArrElement(currentVoc.cards));
   }
 
   function swithCurrentVoc(vocNum: number) {
@@ -83,13 +90,13 @@ export default function useMode() {
     }
   }
 
-  function setCard(index: number) {
-    setCurrentCard(currentVoc.cards[index]);
+  function setCard(card: Card) {
+    setCurrentCard(card);
     toggleLang();
   }
 
   function goAhead() {
-    let index: number = getRandomIndex();
+    const card = getRandomArrElement(currentVoc.cards, askedCards);
     switch (mode) {
       case Mode.EXAMINATION_ANSWER_CORRECT:
         if (askedCards.length === currentVoc.cards.length) {
@@ -99,11 +106,8 @@ export default function useMode() {
             } слов из ${currentVoc.cards.length}`
           );
         }
-        while (askedCards.includes(index)) {
-          index = getRandomIndex();
-        }
-        setCard(index);
-        setAskedCards((prev) => [...prev, index]);
+        setCard(card);
+        setAskedCards((prev) => [...prev, card]);
         setMode(Mode.EXAMINATION_QUESTION);
         setUserAnswer("");
         break;
@@ -115,11 +119,9 @@ export default function useMode() {
             } слов из ${currentVoc.cards.length}`
           );
         }
-        while (askedCards.includes(index)) {
-          index = getRandomIndex();
-        }
-        setCard(index);
-        setAskedCards((prev) => [...prev, index]);
+
+        setCard(card);
+        setAskedCards((prev) => [...prev, card]);
         setMode(Mode.EXAMINATION_QUESTION);
         setUserAnswer("");
         break;
@@ -145,12 +147,8 @@ export default function useMode() {
             } слов из ${currentVoc.cards.length}`
           );
         }
-        while (askedCards.includes(index)) {
-          index = getRandomIndex();
-        }
-
-        setCard(index);
-        setAskedCards((prev) => [...prev, index]);
+        setCard(card);
+        setAskedCards((prev) => [...prev, card]);
         setMode(Mode.QUIZ_QUESTION);
         setUserAnswer("");
         setWrongClicked([]);
@@ -164,7 +162,7 @@ export default function useMode() {
           setMode(Mode.QUIZ_ANSWER_CORRECT);
           setQueezeStatus((prev) => [...prev, true]);
         } else {
-          const clicked = cardsArr.find(
+          const clicked = cardsArrForQuiz.find(
             (e) => e[ansLang].toLowerCase() === userAnswer
           );
           if (!!clicked) {
@@ -176,13 +174,13 @@ export default function useMode() {
         break;
 
       case Mode.EXAMINATION_RESULT:
-        setCard(index);
+        setCard(card);
         break;
       case Mode.QUIZ_RESULT:
-        setCard(index);
+        setCard(card);
         break;
       case Mode.STUDY:
-        setCard(index);
+        setCard(card);
         break;
       default:
         break;
@@ -204,7 +202,7 @@ export default function useMode() {
     modalOpen,
     setModalOpen,
     examinationStatus,
-    cardsArr,
+    cardsArrForQuiz,
     wrongClicked,
   };
 }

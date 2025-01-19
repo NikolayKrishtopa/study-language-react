@@ -24,7 +24,7 @@ function App() {
     userAnswer,
     setUserAnswer,
     modalOpen,
-    cardsArr,
+    cardsArrForQuiz,
     wrongClicked,
   } = useMode();
 
@@ -124,7 +124,7 @@ function App() {
           mode === Mode.QUIZ_ANSWER_INCORRECT ||
           mode === Mode.QUIZ_QUESTION ? (
             <>
-              {cardsArr.map((e) => (
+              {cardsArrForQuiz.map((e) => (
                 <Card
                   key={e.id}
                   value={e[ansLang]}
