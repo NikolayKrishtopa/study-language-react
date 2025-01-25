@@ -16,8 +16,8 @@ export default function useMode() {
   const [ansLang, setAnsLang] = useState<Lang>(Lang.RU);
   const [askedCards, setAskedCards] = useState<Card[]>([]);
   const [userAnswer, setUserAnswer] = useState<string>("");
-  const [examinationStatus, setExaminationStatus] = useState<boolean[]>([]);
-  const [quizStatus, setQuizStatus] = useState<boolean[]>([]);
+  const [answeredCorrectly, setAnsweredCorrectly] = useState<Card[]>([]);
+  const [answeredWrongly, setAnsweredWrongly] = useState<Card[]>([]);
   const [wrongClicked, setWrongClicked] = useState<Array<Number>>([]);
   const [currentCard, setCurrentCard] = useState<Card>(
     getRandomArrElement(currentVoc.cards, askedCards)
@@ -76,9 +76,7 @@ export default function useMode() {
       case Mode.EXAMINATION_ANSWER_CORRECT:
         if (askedCards.length === currentVoc.cards.length) {
           return console.log(
-            `Опрос окончен. Ваш результат: ${
-              examinationStatus.filter((e) => !!e).length
-            } слов из ${currentVoc.cards.length}`
+            `Опрос окончен. Ваш результат: ${answeredCorrectly.length} слов из ${currentVoc.cards.length}`
           );
         }
         setCard(card);
@@ -86,12 +84,11 @@ export default function useMode() {
         setMode(Mode.EXAMINATION_QUESTION);
         setUserAnswer("");
         break;
+
       case Mode.EXAMINATION_ANSWER_INCORRECT:
         if (askedCards.length === currentVoc.cards.length) {
           return console.log(
-            `Опрос окончен. Ваш результат: ${
-              examinationStatus.filter((e) => !!e).length
-            } слов из ${currentVoc.cards.length}`
+            `Опрос окончен. Ваш результат: ${answeredCorrectly.length} слов из ${currentVoc.cards.length}`
           );
         }
 
@@ -106,10 +103,10 @@ export default function useMode() {
           currentCard[ansLang].toLowerCase().includes(userAnswer.toLowerCase())
         ) {
           setMode(Mode.EXAMINATION_ANSWER_CORRECT);
-          setExaminationStatus((prev) => [...prev, true]);
+          setAnsweredCorrectly((prev) => [...prev, card]);
         } else {
           setMode(Mode.EXAMINATION_ANSWER_INCORRECT);
-          setExaminationStatus((prev) => [...prev, false]);
+          setAnsweredWrongly((prev) => [...prev, card]);
         }
 
         break;
@@ -117,9 +114,7 @@ export default function useMode() {
       case Mode.QUIZ_ANSWER_CORRECT:
         if (askedCards.length === currentVoc.cards.length) {
           return console.log(
-            `Опрос окончен. Ваш результат: ${
-              quizStatus.filter((e) => !!e).length
-            } слов из ${currentVoc.cards.length}`
+            `Опрос окончен. Ваш результат: ${answeredCorrectly.length} слов из ${currentVoc.cards.length}`
           );
         }
         setCard(card);
@@ -135,7 +130,7 @@ export default function useMode() {
           currentCard[ansLang].toLowerCase().includes(userAnswer.toLowerCase())
         ) {
           setMode(Mode.QUIZ_ANSWER_CORRECT);
-          setQuizStatus((prev) => [...prev, true]);
+          setAnsweredCorrectly((prev) => [...prev, card]);
         } else {
           const clicked = cardsArrForQuiz.find(
             (e) => e[ansLang].toLowerCase() === userAnswer
@@ -143,7 +138,7 @@ export default function useMode() {
           if (!!clicked) {
             setWrongClicked((prev) => [...prev, clicked.id]);
           }
-          setQuizStatus((prev) => [...prev, false]);
+          setAnsweredWrongly((prev) => [...prev, card]);
         }
 
         break;
@@ -176,7 +171,7 @@ export default function useMode() {
     setUserAnswer,
     modalOpen,
     setModalOpen,
-    examinationStatus,
+    answeredCorrectly,
     cardsArrForQuiz,
     wrongClicked,
   };
