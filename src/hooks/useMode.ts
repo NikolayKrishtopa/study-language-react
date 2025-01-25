@@ -1,23 +1,15 @@
 import { useState, useEffect } from "react";
 import vocaburaries from "../vocaburaries/vocaburaries";
 import { Vocaburary, Card, Lang, Mode } from "../models/models";
+import {
+  getRandomArrElement,
+  createRandomElemArr as createCardsArrForQuiz,
+} from "../utils/utils";
 
 export default function useMode() {
   const [mode, setMode] = useState<Mode>(Mode.STUDY);
   const [currentVoc, setCurrentVoc] = useState<Vocaburary>(vocaburaries[0]);
   const [modalOpen, setModalOpen] = useState(false);
-
-  function getRandomArrElement(
-    arr: Array<Card>,
-    elementsToExclude?: Array<Card>
-  ): Card {
-    const unusedCards = arr.filter(
-      (el) => !elementsToExclude?.some((e) => e.id === el.id)
-    );
-    const randomCard =
-      unusedCards[Math.floor(Math.random() * unusedCards.length)];
-    return randomCard;
-  }
 
   const [askLang, setAskLang] = useState<Lang>(Lang.EN);
   const [cardsArrForQuiz, setCardsArr] = useState<Array<Card>>([]);
@@ -25,36 +17,16 @@ export default function useMode() {
   const [askedCards, setAskedCards] = useState<Card[]>([]);
   const [userAnswer, setUserAnswer] = useState<string>("");
   const [examinationStatus, setExaminationStatus] = useState<boolean[]>([]);
-  const [queezeStatus, setQueezeStatus] = useState<boolean[]>([]);
+  const [quizStatus, setQuizStatus] = useState<boolean[]>([]);
   const [wrongClicked, setWrongClicked] = useState<Array<Number>>([]);
   const [currentCard, setCurrentCard] = useState<Card>(
     getRandomArrElement(currentVoc.cards, askedCards)
   );
 
-  function addElemIntoArrWithRandomIndex(arr: Array<Card>, elem: Card) {
-    const index = Math.floor(Math.random() * arr.length);
-    const resultArr = [...arr.slice(0, index), elem, ...arr.slice(index)];
-
-    return resultArr;
-  }
-
-  function createCardsArrForQuiz() {
-    const supplCards = Array();
-    while (supplCards.length < 3) {
-      const card = getRandomArrElement(currentVoc.cards, askedCards);
-      if (
-        card.id === currentCard.id ||
-        supplCards.some((e) => e.id === card.id)
-      )
-        return;
-      supplCards.push(card);
-    }
-    setCardsArr(addElemIntoArrWithRandomIndex(supplCards, currentCard));
-  }
-
   useEffect(() => {
     if (mode !== Mode.QUIZ_QUESTION) return;
-    createCardsArrForQuiz();
+    setCardsArr(createCardsArrForQuiz(currentVoc.cards, 4, currentCard));
+    // console.log("card array set", cardsArrForQuiz);
   }, [mode]);
 
   useEffect(() => {
@@ -97,6 +69,9 @@ export default function useMode() {
 
   function goAhead() {
     const card = getRandomArrElement(currentVoc.cards, askedCards);
+
+    // console.log([cardsArrForQuiz, mode, currentCard]);
+
     switch (mode) {
       case Mode.EXAMINATION_ANSWER_CORRECT:
         if (askedCards.length === currentVoc.cards.length) {
@@ -143,7 +118,7 @@ export default function useMode() {
         if (askedCards.length === currentVoc.cards.length) {
           return console.log(
             `Опрос окончен. Ваш результат: ${
-              queezeStatus.filter((e) => !!e).length
+              quizStatus.filter((e) => !!e).length
             } слов из ${currentVoc.cards.length}`
           );
         }
@@ -160,7 +135,7 @@ export default function useMode() {
           currentCard[ansLang].toLowerCase().includes(userAnswer.toLowerCase())
         ) {
           setMode(Mode.QUIZ_ANSWER_CORRECT);
-          setQueezeStatus((prev) => [...prev, true]);
+          setQuizStatus((prev) => [...prev, true]);
         } else {
           const clicked = cardsArrForQuiz.find(
             (e) => e[ansLang].toLowerCase() === userAnswer
@@ -168,7 +143,7 @@ export default function useMode() {
           if (!!clicked) {
             setWrongClicked((prev) => [...prev, clicked.id]);
           }
-          setQueezeStatus((prev) => [...prev, false]);
+          setQuizStatus((prev) => [...prev, false]);
         }
 
         break;
