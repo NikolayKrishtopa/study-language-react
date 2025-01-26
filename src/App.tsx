@@ -9,11 +9,12 @@ import { Popup } from "./components/Popup/Popup";
 import { useState } from "react";
 import { Menu } from "./components/Menu/Menu";
 import { CardsContainer } from "./components/CardsContainer/CardsContainer";
+import { Message } from "./components/Message/Message";
 
 function App() {
   const {
     mode,
-    setMode,
+    switchMode,
     currentVoc,
     swithCurrentVoc,
     askLang,
@@ -25,6 +26,8 @@ function App() {
     modalOpen,
     cardsArrForQuiz,
     wrongClicked,
+    systemMsg,
+    reset,
   } = useMode();
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -54,15 +57,28 @@ function App() {
       })}
     >
       {modalOpen && <div>модальное окно открыто</div>}
-      <Popup isOpen={menuOpen}>
-        <Menu
-          mode={mode}
-          currentVoc={currentVoc}
-          swithCurrentVoc={swithCurrentVoc}
-          setMode={setMode}
-        />
+      <Popup
+        isOpen={menuOpen || !!systemMsg}
+        colorsInverted={!menuOpen}
+        onClose={!menuOpen ? reset : undefined}
+      >
+        {menuOpen ? (
+          <Menu
+            mode={mode}
+            currentVoc={currentVoc}
+            swithCurrentVoc={swithCurrentVoc}
+            switchMode={switchMode}
+          />
+        ) : (
+          <Message title="Опрос окончен. Ваш результат:" text={systemMsg} />
+        )}
       </Popup>
-      <Header onClickHandler={toggleMenu} isMenuShown={menuOpen} />
+
+      <Header
+        onClickHandler={toggleMenu}
+        isMenuShown={menuOpen}
+        showMenuBtn={!systemMsg}
+      />
       <main className="content">
         <Annotation
           prefixText={

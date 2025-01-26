@@ -1,8 +1,7 @@
-import { Dispatch, SetStateAction } from "react";
 import { Mode } from "../../models/models";
 
 export interface IButtonSwitcherProps {
-  switchHandler: Dispatch<SetStateAction<Mode>>;
+  switchHandler: (mode: Mode) => void;
   buttons: Array<unknown>;
   activeId?: number | string;
   additionalClass?: string;

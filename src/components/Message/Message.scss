@@ -1,0 +1,16 @@
+@use "../../styles/globalVariables.scss" as *;
+
+.message {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  color: $white;
+  &__title {
+    font-family: "suisse", "arial", sans-serif;
+    font-size: 40px;
+  }
+  &__text {
+    font-family: "suisse", "arial", sans-serif;
+    font-size: 32px;
+  }
+}

@@ -4,5 +4,5 @@ export interface IMenuProps {
   mode: Mode;
   currentVoc: Vocaburary;
   swithCurrentVoc: (vocNum: number) => void;
-  setMode: React.Dispatch<React.SetStateAction<Mode>>;
+  switchMode: (mode: Mode) => void;
 }

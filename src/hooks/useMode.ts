@@ -12,10 +12,11 @@ export default function useMode() {
   const [modalOpen, setModalOpen] = useState(false);
 
   const [askLang, setAskLang] = useState<Lang>(Lang.EN);
-  const [cardsArrForQuiz, setCardsArr] = useState<Array<Card>>([]);
+  const [cardsArrForQuiz, setCardsArrForQuiz] = useState<Array<Card>>([]);
   const [ansLang, setAnsLang] = useState<Lang>(Lang.RU);
   const [askedCards, setAskedCards] = useState<Card[]>([]);
   const [userAnswer, setUserAnswer] = useState<string>("");
+  const [systemMsg, setSystemMsg] = useState<string>("");
   const [answeredCorrectly, setAnsweredCorrectly] = useState<Card[]>([]);
   const [answeredWrongly, setAnsweredWrongly] = useState<Card[]>([]);
   const [wrongClicked, setWrongClicked] = useState<Array<Number>>([]);
@@ -25,7 +26,7 @@ export default function useMode() {
 
   useEffect(() => {
     if (mode !== Mode.QUIZ_QUESTION) return;
-    setCardsArr(createCardsArrForQuiz(currentVoc.cards, 4, currentCard));
+    setCardsArrForQuiz(createCardsArrForQuiz(currentVoc.cards, 4, currentCard));
     // console.log("card array set", cardsArrForQuiz);
   }, [mode]);
 
@@ -35,15 +36,21 @@ export default function useMode() {
   }, [userAnswer]);
 
   function reset() {
+    const card = getRandomArrElement(currentVoc.cards);
     setAskedCards([]);
-    setCurrentCard(getRandomArrElement(currentVoc.cards));
+    setCurrentCard(card);
     setAnsweredCorrectly([]);
     setAnsweredWrongly([]);
+    setUserAnswer("");
+    ResetSystMsg();
+    if (mode !== Mode.QUIZ_QUESTION) {
+      setCardsArrForQuiz(createCardsArrForQuiz(currentVoc.cards, 4, card));
+    }
   }
 
   function swithCurrentVoc(vocNum: number) {
-    setCurrentVoc(vocaburaries[vocNum]);
     reset();
+    setCurrentVoc(vocaburaries[vocNum]);
   }
 
   function toggleLang() {
@@ -64,9 +71,18 @@ export default function useMode() {
     }
   }
 
-  function setCard(card: Card) {
+  function switchCard(card: Card) {
     setCurrentCard(card);
     toggleLang();
+  }
+
+  function ResetSystMsg() {
+    setSystemMsg("");
+  }
+
+  function switchMode(mode: Mode) {
+    reset();
+    setMode(mode);
   }
 
   function goAhead() {
@@ -74,50 +90,55 @@ export default function useMode() {
     switch (mode) {
       case Mode.EXAMINATION_ANSWER_CORRECT:
         if (askedCards.length === currentVoc.cards.length) {
-          return console.log(
-            `Опрос окончен. Ваш результат: ${answeredCorrectly.length} слов из ${currentVoc.cards.length}, ${answeredWrongly.length} неправильно.`
+          setSystemMsg(
+            `${answeredCorrectly.length} слов из ${currentVoc.cards.length}, ${answeredWrongly.length} неправильно.`
           );
+          console.log(answeredCorrectly, answeredWrongly);
+
+          return;
         }
-        setCard(card);
-        setAskedCards((prev) => [...prev, card]);
+        switchCard(card);
         setMode(Mode.EXAMINATION_QUESTION);
         setUserAnswer("");
         break;
 
       case Mode.EXAMINATION_ANSWER_INCORRECT:
         if (askedCards.length === currentVoc.cards.length) {
-          return console.log(
-            `Опрос окончен. Ваш результат: ${answeredCorrectly.length} слов из ${currentVoc.cards.length}, ${answeredWrongly.length} неправильно.`
+          setSystemMsg(
+            `${answeredCorrectly.length} слов из ${currentVoc.cards.length}, ${answeredWrongly.length} неправильно.`
           );
+          console.log(answeredCorrectly, answeredWrongly);
+          return;
         }
 
-        setCard(card);
-        setAskedCards((prev) => [...prev, card]);
+        switchCard(card);
         setMode(Mode.EXAMINATION_QUESTION);
         setUserAnswer("");
         break;
       case Mode.EXAMINATION_QUESTION:
+        setAskedCards((prev) => [...prev, currentCard]);
         if (
           userAnswer.length > 0 &&
           currentCard[ansLang].toLowerCase().includes(userAnswer.toLowerCase())
         ) {
           setMode(Mode.EXAMINATION_ANSWER_CORRECT);
-          setAnsweredCorrectly((prev) => [...prev, card]);
+          setAnsweredCorrectly((prev) => [...prev, currentCard]);
         } else {
           setMode(Mode.EXAMINATION_ANSWER_INCORRECT);
-          setAnsweredWrongly((prev) => [...prev, card]);
+          setAnsweredWrongly((prev) => [...prev, currentCard]);
         }
 
         break;
 
       case Mode.QUIZ_ANSWER_CORRECT:
         if (askedCards.length === currentVoc.cards.length) {
-          return console.log(
-            `Опрос окончен. Ваш результат: ${answeredCorrectly.length} слов из ${currentVoc.cards.length}, ${answeredWrongly.length} неправильно.`
+          setSystemMsg(
+            `${answeredCorrectly.length} слов из ${currentVoc.cards.length}, ${answeredWrongly.length} неправильно.`
           );
+          console.log(answeredCorrectly, answeredWrongly);
+          return;
         }
-        setCard(card);
-        setAskedCards((prev) => [...prev, card]);
+        switchCard(card);
         setMode(Mode.QUIZ_QUESTION);
         setUserAnswer("");
         setWrongClicked([]);
@@ -128,29 +149,24 @@ export default function useMode() {
           userAnswer.length > 0 &&
           currentCard[ansLang].toLowerCase().includes(userAnswer.toLowerCase())
         ) {
+          setAskedCards((prev) => [...prev, currentCard]);
           setMode(Mode.QUIZ_ANSWER_CORRECT);
           wrongClicked.length > 0
-            ? setAnsweredWrongly((prev) => [...prev, card])
-            : setAnsweredCorrectly((prev) => [...prev, card]);
+            ? setAnsweredWrongly((prev) => [...prev, currentCard])
+            : setAnsweredCorrectly((prev) => [...prev, currentCard]);
         } else {
-          const clicked = cardsArrForQuiz.find(
+          const clickedCard = cardsArrForQuiz.find(
             (e) => e[ansLang].toLowerCase() === userAnswer
           );
-          if (!!clicked) {
-            setWrongClicked((prev) => [...prev, clicked.id]);
+          if (!!clickedCard) {
+            setWrongClicked((prev) => [...prev, clickedCard.id]);
           }
         }
 
         break;
 
-      case Mode.EXAMINATION_RESULT:
-        setCard(card);
-        break;
-      case Mode.QUIZ_RESULT:
-        setCard(card);
-        break;
       case Mode.STUDY:
-        setCard(card);
+        switchCard(card);
         break;
       default:
         break;
@@ -159,7 +175,7 @@ export default function useMode() {
 
   return {
     mode,
-    setMode,
+    switchMode,
     currentVoc,
     swithCurrentVoc,
     askLang,
@@ -174,5 +190,7 @@ export default function useMode() {
     answeredCorrectly,
     cardsArrForQuiz,
     wrongClicked,
+    systemMsg,
+    reset,
   };
 }

@@ -7,7 +7,7 @@ export const Menu = ({
   mode,
   currentVoc,
   swithCurrentVoc,
-  setMode,
+  switchMode,
 }: IMenuProps) => {
   return (
     <>
@@ -46,7 +46,7 @@ export const Menu = ({
             ? Mode.QUIZ_QUESTION
             : Mode.STUDY
         }
-        switchHandler={setMode}
+        switchHandler={switchMode}
       />
     </>
   );

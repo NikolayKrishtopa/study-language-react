@@ -6,25 +6,42 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: $purple;
   background: $purple-pink;
   z-index: 2;
   display: none;
-}
-.popupContainer {
-  background-color: $white;
-  width: 1500px;
-  height: 1500px;
-  border-radius: 50%;
-  position: absolute;
-  top: -500px;
-  left: -50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
 
-.popupShown {
-  display: flex;
+  &Shown {
+    display: flex;
+  }
+
+  &Inverted {
+    background: $white;
+  }
+
+  &CloseBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    // border: none;
+    background: none;
+    cursor: pointer;
+  }
+
+  &Container {
+    background: $white;
+    width: 1500px;
+    height: 1500px;
+    border-radius: 50%;
+    position: absolute;
+    top: -500px;
+    left: -50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    &Inverted {
+      background: $purple-pink;
+    }
+  }
 }
