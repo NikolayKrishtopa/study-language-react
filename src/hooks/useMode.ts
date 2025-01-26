@@ -37,6 +37,8 @@ export default function useMode() {
   function reset() {
     setAskedCards([]);
     setCurrentCard(getRandomArrElement(currentVoc.cards));
+    setAnsweredCorrectly([]);
+    setAnsweredWrongly([]);
   }
 
   function swithCurrentVoc(vocNum: number) {
@@ -69,14 +71,11 @@ export default function useMode() {
 
   function goAhead() {
     const card = getRandomArrElement(currentVoc.cards, askedCards);
-
-    // console.log([cardsArrForQuiz, mode, currentCard]);
-
     switch (mode) {
       case Mode.EXAMINATION_ANSWER_CORRECT:
         if (askedCards.length === currentVoc.cards.length) {
           return console.log(
-            `Опрос окончен. Ваш результат: ${answeredCorrectly.length} слов из ${currentVoc.cards.length}`
+            `Опрос окончен. Ваш результат: ${answeredCorrectly.length} слов из ${currentVoc.cards.length}, ${answeredWrongly.length} неправильно.`
           );
         }
         setCard(card);
@@ -88,7 +87,7 @@ export default function useMode() {
       case Mode.EXAMINATION_ANSWER_INCORRECT:
         if (askedCards.length === currentVoc.cards.length) {
           return console.log(
-            `Опрос окончен. Ваш результат: ${answeredCorrectly.length} слов из ${currentVoc.cards.length}`
+            `Опрос окончен. Ваш результат: ${answeredCorrectly.length} слов из ${currentVoc.cards.length}, ${answeredWrongly.length} неправильно.`
           );
         }
 
@@ -114,7 +113,7 @@ export default function useMode() {
       case Mode.QUIZ_ANSWER_CORRECT:
         if (askedCards.length === currentVoc.cards.length) {
           return console.log(
-            `Опрос окончен. Ваш результат: ${answeredCorrectly.length} слов из ${currentVoc.cards.length}`
+            `Опрос окончен. Ваш результат: ${answeredCorrectly.length} слов из ${currentVoc.cards.length}, ${answeredWrongly.length} неправильно.`
           );
         }
         setCard(card);
@@ -130,7 +129,9 @@ export default function useMode() {
           currentCard[ansLang].toLowerCase().includes(userAnswer.toLowerCase())
         ) {
           setMode(Mode.QUIZ_ANSWER_CORRECT);
-          setAnsweredCorrectly((prev) => [...prev, card]);
+          wrongClicked.length > 0
+            ? setAnsweredWrongly((prev) => [...prev, card])
+            : setAnsweredCorrectly((prev) => [...prev, card]);
         } else {
           const clicked = cardsArrForQuiz.find(
             (e) => e[ansLang].toLowerCase() === userAnswer
@@ -138,7 +139,6 @@ export default function useMode() {
           if (!!clicked) {
             setWrongClicked((prev) => [...prev, clicked.id]);
           }
-          setAnsweredWrongly((prev) => [...prev, card]);
         }
 
         break;

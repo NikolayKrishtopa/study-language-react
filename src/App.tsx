@@ -1,15 +1,14 @@
 import "./index.scss";
 import "../public/vendor/fonts/fonts.scss";
-import vocaburaries from "./vocaburaries/vocaburaries";
 import useMode from "./hooks/useMode";
 import { Lang, Mode } from "./models/models";
 import Card from "./components/Card/Card";
-import { ButtonSwitcher } from "./components/ButtonSwitcher/ButtonSwitcher";
 import cn from "classnames";
 import Annotation from "./components/Annotation/Annotation";
 import { Header } from "./components/Header/Header";
 import { Popup } from "./components/Popup/Popup";
 import { useState } from "react";
+import { Menu } from "./components/Menu/Menu";
 
 function App() {
   const {
@@ -56,45 +55,12 @@ function App() {
     >
       {modalOpen && <div>модальное окно открыто</div>}
       <Popup isOpen={menuOpen}>
-        <>
-          <p>Выберите изучаемый словарь</p>
-          <ButtonSwitcher
-            buttons={vocaburaries}
-            activeId={currentVoc.id}
-            additionalClass="button_type_voc"
-            switchHandler={(arg: any) => {
-              if (typeof arg !== "number") return;
-              swithCurrentVoc(arg);
-            }}
-          />
-          <ButtonSwitcher
-            buttons={[
-              { id: Mode.STUDY, text: "Изучение", value: Mode.STUDY },
-              {
-                id: Mode.EXAMINATION_QUESTION,
-                text: "Опрос",
-                value: Mode.EXAMINATION_QUESTION,
-              },
-              {
-                id: Mode.QUIZ_QUESTION,
-                text: "Тест",
-                value: Mode.QUIZ_QUESTION,
-              },
-            ]}
-            activeId={
-              mode === Mode.EXAMINATION_QUESTION ||
-              mode === Mode.EXAMINATION_ANSWER_CORRECT ||
-              mode === Mode.EXAMINATION_ANSWER_INCORRECT
-                ? Mode.EXAMINATION_QUESTION
-                : mode === Mode.QUIZ_QUESTION ||
-                  mode === Mode.QUIZ_ANSWER_CORRECT ||
-                  mode === Mode.QUIZ_ANSWER_INCORRECT
-                ? Mode.QUIZ_QUESTION
-                : Mode.STUDY
-            }
-            switchHandler={setMode}
-          />
-        </>
+        <Menu
+          mode={mode}
+          currentVoc={currentVoc}
+          swithCurrentVoc={swithCurrentVoc}
+          setMode={setMode}
+        />
       </Popup>
       <Header onClickHandler={toggleMenu} isMenuShown={menuOpen} />
       <main className="content">
