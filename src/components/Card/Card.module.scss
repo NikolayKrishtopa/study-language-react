@@ -16,22 +16,22 @@
   text-align: center;
   outline: none;
   border: none;
-}
-.card_text_s {
-  font-size: 30px;
-}
-.card_state_correct {
-  border: 10px solid $success;
-  color: $success;
-}
-.card_state_incorrect {
-  border: 10px solid $failure;
-  color: $failure;
-}
-.card_type_button {
-  cursor: pointer;
-}
+  &_text_s {
+    font-size: 30px;
+  }
+  &_state_correct {
+    border: 10px solid $success;
+    color: $success;
+  }
+  &_state_incorrect {
+    border: 10px solid $failure;
+    color: $failure;
+  }
+  &_type_button {
+    cursor: pointer;
+  }
 
-.card_type_button:hover {
-  background-color: $light-gray;
+  &_type_button:hover {
+    background-color: $light-gray;
+  }
 }

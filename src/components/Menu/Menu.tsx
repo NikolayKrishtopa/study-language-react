@@ -15,7 +15,7 @@ export const Menu = ({
       <ButtonSwitcher
         buttons={vocaburaries}
         activeId={currentVoc.id}
-        additionalClass="button_type_voc"
+        additionalClass="button-switcher__button_type_voc"
         switchHandler={(arg: any) => {
           if (typeof arg !== "number") return;
           swithCurrentVoc(arg);

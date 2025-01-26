@@ -122,9 +122,7 @@ function App() {
             )}
         </div>
       </main>
-      <footer className="footer">
-        <div className="overlay"></div>
-      </footer>
+      <footer className="footer"></footer>
     </div>
   );
 }

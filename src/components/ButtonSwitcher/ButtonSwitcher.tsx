@@ -1,6 +1,7 @@
 import "../../index.scss";
 import { IButtonSwitcherProps } from "./ButtonSwitcher.props";
 import cn from "classnames";
+import "./ButtonSwitcher.scss";
 
 export const ButtonSwitcher = ({
   switchHandler,
@@ -9,11 +10,11 @@ export const ButtonSwitcher = ({
   additionalClass,
 }: IButtonSwitcherProps) => {
   return (
-    <div className="flex-row">
+    <div className="button-switcher">
       {buttons.map((b, i) => (
         <button
-          className={cn("button", additionalClass, {
-            button_state_active: b.id === activeId,
+          className={cn("button-switcher__button", additionalClass, {
+            "button-switcher__button_state_active": b.id === activeId,
           })}
           key={b.id}
           onClick={() => switchHandler(b.value || i)}

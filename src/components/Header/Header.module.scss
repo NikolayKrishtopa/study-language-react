@@ -2,45 +2,46 @@
 
 .header {
   position: static;
-}
-.header__round {
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  position: absolute;
-  background-color: $purple;
-  background-size: cover;
-  top: -400px;
-  left: -200px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  padding-bottom: 100px;
-  padding-left: 100px;
-}
-.header__title {
-  font-family: "Pacifico";
-  color: $white;
-  font-size: 40px;
-}
-.header__menuBtn {
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  z-index: 3;
+
+  &__title {
+    font-family: "Pacifico";
+    color: $white;
+    font-size: 40px;
+  }
+  &__round {
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    position: absolute;
+    background-color: $purple;
+    background-size: cover;
+    top: -400px;
+    left: -200px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 100px;
+    padding-left: 100px;
+  }
+  &__menuBtn {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 3;
+  }
+  &__btnImage {
+    transition: transform 0.3s linear;
+  }
+  &BtnImageActivated {
+    transform: rotate(90deg);
+  }
 }
 
 @media (max-height: 800px) {
   .header {
     height: 0;
   }
-}
-.headerBtnImage {
-  transition: transform 0.3s linear;
-}
-.headerBtnImageActivated {
-  transform: rotate(90deg);
 }

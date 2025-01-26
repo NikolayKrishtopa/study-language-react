@@ -1,0 +1,40 @@
+@use "../../styles/globalVariables.scss" as *;
+.button-switcher {
+  display: flex;
+  flex-direction: row;
+  &__button {
+    margin: 20px 5px;
+    /* display: block; */
+    width: 150px;
+    height: 50px;
+    font-size: 14px;
+    /*background-color: rgb(34, 137, 155);*/
+    background: transparent;
+    border: $purple solid 2px;
+    font-family: "suisse", "arial", sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: $purple;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__button_type_voc {
+    margin: 5px;
+    width: 50px;
+    height: 30px;
+  }
+  &__button_state_active {
+    background-color: $purple;
+    color: $white;
+  }
+  &__button:hover {
+    opacity: 0.8;
+  }
+  &__button:active {
+    color: rgb(88, 154, 165);
+  }
+}
