@@ -1,3 +1,6 @@
+import { ISubmitButtonProps } from "../components/SubmitButton/SubmitButton.props";
+import { Mode } from "../models/models";
+
 export function getRandomArrElement<T extends { id: Number }>(
   arr: Array<T>,
   elementsToExclude?: Array<T>
@@ -44,3 +47,41 @@ export function createRandomElemArr<T extends { id: Number }>(
     ? addElemIntoArrWithRandomIndex(supplCards, elementToInclude)
     : supplCards;
 }
+
+export const isSubmitButtonShown = (mode: Mode) => {
+  return mode !== Mode.QUIZ_ANSWER_INCORRECT && mode !== Mode.QUIZ_QUESTION;
+};
+
+export const submitButtonType = (mode: Mode): ISubmitButtonProps["type"] => {
+  if (mode === Mode.EXAMINATION_QUESTION) {
+    return "submit";
+  }
+  if (
+    mode === Mode.STUDY ||
+    mode === Mode.QUIZ_ANSWER_CORRECT ||
+    mode === Mode.EXAMINATION_ANSWER_CORRECT ||
+    mode === Mode.EXAMINATION_ANSWER_INCORRECT
+  ) {
+    return "forward";
+  }
+  return undefined;
+};
+
+export const submitButtonStyle = (mode: Mode): ISubmitButtonProps["state"] => {
+  if (mode === Mode.STUDY || mode === Mode.EXAMINATION_QUESTION) {
+    return "neutral";
+  }
+  if (
+    mode === Mode.QUIZ_ANSWER_CORRECT ||
+    mode === Mode.EXAMINATION_ANSWER_CORRECT
+  ) {
+    return "success";
+  }
+  if (
+    mode === Mode.QUIZ_ANSWER_INCORRECT ||
+    mode === Mode.EXAMINATION_ANSWER_INCORRECT
+  ) {
+    return "fail";
+  }
+  return undefined;
+};

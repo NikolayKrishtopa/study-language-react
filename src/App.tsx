@@ -10,6 +10,12 @@ import { useState } from "react";
 import { Menu } from "./components/Menu/Menu";
 import { CardsContainer } from "./components/CardsContainer/CardsContainer";
 import { Message } from "./components/Message/Message";
+import { SubmitButton } from "./components/SubmitButton/SubmitButton";
+import {
+  isSubmitButtonShown,
+  submitButtonType,
+  submitButtonStyle,
+} from "./utils/utils";
 
 function App() {
   const {
@@ -31,6 +37,8 @@ function App() {
   } = useMode();
 
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const submitButtonShown = isSubmitButtonShown(mode);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -104,22 +112,14 @@ function App() {
           setUserAnswer={setUserAnswer}
         />
         <div>
-          {mode !== Mode.QUIZ_ANSWER_INCORRECT &&
-            mode !== Mode.QUIZ_QUESTION && (
-              <button
-                className="button"
-                id="nextCardButton"
-                onClick={() => {
-                  goAhead();
-                }}
-              >
-                {mode === Mode.STUDY ||
-                mode === Mode.EXAMINATION_ANSWER_CORRECT ||
-                mode === Mode.EXAMINATION_ANSWER_INCORRECT
-                  ? "Следующая карточка"
-                  : "Проверить ответ"}
-              </button>
-            )}
+          {!!submitButtonShown && (
+            <SubmitButton
+              id="submitBtn"
+              onClick={goAhead}
+              type={submitButtonType(mode)}
+              state={submitButtonStyle(mode)}
+            />
+          )}
         </div>
       </main>
       <footer className="footer"></footer>

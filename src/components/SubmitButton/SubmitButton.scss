@@ -1,0 +1,31 @@
+@use "../../styles/globalVariables.scss" as *;
+
+.button {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background-color: $mid-gray;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 30px;
+  bottom: 25%;
+  &:hover {
+    opacity: 90%;
+    cursor: pointer;
+  }
+  &__img {
+    transform: scale(5);
+  }
+  &_neutral {
+    background-color: $purple;
+  }
+  &_success {
+    background-color: $success;
+  }
+  &_fail {
+    background-color: $failure;
+  }
+}
