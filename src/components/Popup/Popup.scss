@@ -10,24 +10,28 @@
   z-index: 2;
   display: none;
 
-  &Shown {
+  &_shown {
     display: flex;
   }
 
-  &Inverted {
+  &_inverted {
     background: $white;
   }
 
-  &CloseBtn {
+  &__close-btn {
     position: absolute;
     top: 20px;
     right: 20px;
-    // border: none;
+    border: none;
     background: none;
     cursor: pointer;
+    z-index: 2;
+  }
+  &__close-icon {
+    transform: scale(2);
   }
 
-  &Container {
+  &__container {
     background: $white;
     width: 1500px;
     height: 1500px;
@@ -40,7 +44,7 @@
     align-items: center;
     justify-content: center;
 
-    &Inverted {
+    &_inverted {
       background: $purple-pink;
     }
   }

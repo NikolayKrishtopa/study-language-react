@@ -43,14 +43,20 @@ export default function useMode() {
     setAnsweredWrongly([]);
     setUserAnswer("");
     ResetSystMsg();
-    if (mode !== Mode.QUIZ_QUESTION) {
+    setWrongClicked([]);
+    if (
+      mode === Mode.QUIZ_QUESTION ||
+      mode === Mode.QUIZ_ANSWER_CORRECT ||
+      mode === Mode.QUIZ_ANSWER_INCORRECT
+    ) {
+      setMode(Mode.QUIZ_QUESTION);
       setCardsArrForQuiz(createCardsArrForQuiz(currentVoc.cards, 4, card));
     }
   }
 
   function swithCurrentVoc(vocNum: number) {
-    reset();
     setCurrentVoc(vocaburaries[vocNum]);
+    reset();
   }
 
   function toggleLang() {
@@ -81,8 +87,8 @@ export default function useMode() {
   }
 
   function switchMode(mode: Mode) {
-    reset();
     setMode(mode);
+    reset();
   }
 
   function goAhead() {
@@ -158,9 +164,8 @@ export default function useMode() {
           const clickedCard = cardsArrForQuiz.find(
             (e) => e[ansLang].toLowerCase() === userAnswer
           );
-          if (!!clickedCard) {
-            setWrongClicked((prev) => [...prev, clickedCard.id]);
-          }
+          if (!clickedCard) return;
+          setWrongClicked((prev) => [...prev, clickedCard.id]);
         }
 
         break;

@@ -1,7 +1,7 @@
 import IPopupProps from "./Popup props";
-import s from "./Popup.module.scss";
+import "./Popup.scss";
 import cn from "classnames";
-import closeIcon from "../../../public/img/icons/close_icon.svg";
+import closeIcon from "../../../public/img/icons/close.svg";
 
 export const Popup = ({
   children,
@@ -12,19 +12,19 @@ export const Popup = ({
   return (
     <div
       className={cn(
-        s.popup,
-        { [s.popupShown]: isOpen },
-        { [s.popupInverted]: colorsInverted }
+        "popup",
+        { popup_shown: isOpen },
+        { popup_inverted: colorsInverted }
       )}
     >
       {!!onClose && (
-        <button className={s.popupCloseBtn} onClick={onClose}>
-          <img src={closeIcon} alt="Close" />
+        <button className="popup__close-btn" onClick={onClose}>
+          <img src={closeIcon} alt="Close" className="popup__close-icon" />
         </button>
       )}
       <div
-        className={cn(s.popupContainer, {
-          [s.popupContainerInverted]: colorsInverted,
+        className={cn("popup__container", {
+          popup__container_inverted: colorsInverted,
         })}
       >
         {children}
