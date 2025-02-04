@@ -1,21 +1,14 @@
 .content {
-  padding: 50px 200px 200px;
+  padding: 50px 200px 250px;
   height: 100%;
-
   font-weight: bold;
   color: rgb(197, 227, 230);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-}
-.content__cards-container {
-  width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-rows: 200px 1fr;
   gap: 30px;
-  max-width: 1200px;
-  flex-wrap: wrap;
+  justify-items: center;
 }
+
 @media (max-height: 800px) {
   .content {
     height: 100vh;

@@ -1,6 +1,7 @@
 import { Mode } from "../../models/models";
 import Card from "../Card/Card";
 import { ICardsContainerProps } from "./CardsContainer.props.";
+import "./CardsContainer.scss";
 
 export const CardsContainer = ({
   mode,
@@ -12,9 +13,21 @@ export const CardsContainer = ({
   askLang,
   setUserAnswer,
 }: ICardsContainerProps) => {
+  const isStudy = mode === Mode.STUDY;
+
+  const isQuiz =
+    mode === Mode.QUIZ_ANSWER_CORRECT ||
+    mode === Mode.QUIZ_ANSWER_INCORRECT ||
+    mode === Mode.QUIZ_QUESTION;
+
+  const isTypeText =
+    mode === Mode.STUDY ||
+    mode === Mode.EXAMINATION_ANSWER_CORRECT ||
+    mode === Mode.EXAMINATION_ANSWER_INCORRECT;
+
   return (
-    <div className="content__cards-container">
-      {mode === Mode.STUDY && (
+    <div className="cards-container">
+      {isStudy && (
         <Card
           value={currentCard[askLang]}
           mode="text"
@@ -22,9 +35,7 @@ export const CardsContainer = ({
           id="questionCard"
         />
       )}
-      {mode === Mode.QUIZ_ANSWER_CORRECT ||
-      mode === Mode.QUIZ_ANSWER_INCORRECT ||
-      mode === Mode.QUIZ_QUESTION ? (
+      {isQuiz ? (
         <>
           {cardsArrForQuiz.map((e) => (
             <Card
@@ -45,20 +56,8 @@ export const CardsContainer = ({
         </>
       ) : (
         <Card
-          value={
-            mode === Mode.STUDY ||
-            mode === Mode.EXAMINATION_ANSWER_CORRECT ||
-            mode === Mode.EXAMINATION_ANSWER_INCORRECT
-              ? currentCard[ansLang]
-              : userAnswer
-          }
-          mode={
-            mode === Mode.STUDY ||
-            mode === Mode.EXAMINATION_ANSWER_CORRECT ||
-            mode === Mode.EXAMINATION_ANSWER_INCORRECT
-              ? "text"
-              : "input"
-          }
+          value={isTypeText ? currentCard[ansLang] : userAnswer}
+          mode={isTypeText ? "text" : "input"}
           inputHandler={(e) => setUserAnswer(e.currentTarget.value)}
           state={
             mode === Mode.EXAMINATION_ANSWER_CORRECT

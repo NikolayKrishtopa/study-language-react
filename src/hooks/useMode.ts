@@ -45,9 +45,15 @@ export default function useMode() {
     ResetSystMsg();
     setWrongClicked([]);
     if (
-      mode === Mode.QUIZ_QUESTION ||
       mode === Mode.QUIZ_ANSWER_CORRECT ||
       mode === Mode.QUIZ_ANSWER_INCORRECT
+    ) {
+      setMode(Mode.QUIZ_QUESTION);
+      setCardsArrForQuiz(createCardsArrForQuiz(currentVoc.cards, 4, card));
+    }
+    if (
+      mode === Mode.EXAMINATION_ANSWER_CORRECT ||
+      mode === Mode.EXAMINATION_ANSWER_INCORRECT
     ) {
       setMode(Mode.QUIZ_QUESTION);
       setCardsArrForQuiz(createCardsArrForQuiz(currentVoc.cards, 4, card));
@@ -87,8 +93,8 @@ export default function useMode() {
   }
 
   function switchMode(mode: Mode) {
-    setMode(mode);
     reset();
+    setMode(mode);
   }
 
   function goAhead() {
