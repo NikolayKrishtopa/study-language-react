@@ -14,15 +14,9 @@
   align-items: flex-end;
   padding-bottom: 100px;
   padding-left: 100px;
-
-  &__title {
-    font-family: "Pacifico";
-    color: $white;
-    font-size: 40px;
+  @media screen and (max-width: $breakpointDesktop) {
+    bottom: -500px;
   }
-}
-@media (max-height: 800px) {
-  .footer {
-    height: 0;
+  @media screen and (max-width: $breakpointDesktopSmall) {
   }
 }

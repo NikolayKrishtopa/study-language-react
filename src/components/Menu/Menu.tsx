@@ -2,6 +2,7 @@ import { Mode } from "../../models/models";
 import vocaburaries from "../../vocaburaries/vocaburaries";
 import { ButtonSwitcher } from "../ButtonSwitcher/ButtonSwitcher";
 import { IMenuProps } from "./Menu.props";
+import "./Menu.scss";
 
 export const Menu = ({
   mode,
@@ -10,8 +11,8 @@ export const Menu = ({
   switchMode,
 }: IMenuProps) => {
   return (
-    <>
-      <p>Выберите изучаемый словарь</p>
+    <div className="menu">
+      <p className="menu__title">Выберите изучаемый словарь</p>
       <ButtonSwitcher
         buttons={vocaburaries}
         activeId={currentVoc.id}
@@ -48,6 +49,6 @@ export const Menu = ({
         }
         switchHandler={switchMode}
       />
-    </>
+    </div>
   );
 };

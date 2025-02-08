@@ -1,3 +1,5 @@
+@use "../../styles/globalVariables.scss" as *;
+
 .content {
   padding: 50px 200px 250px;
   height: 100%;
@@ -7,10 +9,11 @@
   grid-template-rows: 200px 1fr;
   gap: 30px;
   justify-items: center;
-}
-
-@media (max-height: 800px) {
-  .content {
-    height: 100vh;
+  @media screen and (max-width: $breakpointDesktop) {
+    padding: 50px 100px 250px;
+    grid-template-rows: 150px 1fr;
+  }
+  @media screen and (max-width: $breakpointDesktopSmall) {
+    padding: 50px 100px 250px;
   }
 }

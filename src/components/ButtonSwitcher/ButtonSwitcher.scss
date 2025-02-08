@@ -2,6 +2,8 @@
 .button-switcher {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
   &__button {
     margin: 20px 5px;
     /* display: block; */

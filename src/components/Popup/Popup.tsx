@@ -23,12 +23,11 @@ export const Popup = ({
         </button>
       )}
       <div
-        className={cn("popup__container", {
-          popup__container_inverted: colorsInverted,
+        className={cn("popup__decor", {
+          popup__decor_inverted: colorsInverted,
         })}
-      >
-        {children}
-      </div>
+      ></div>
+      <div className="popup__container">{children}</div>
     </div>
   );
 };
