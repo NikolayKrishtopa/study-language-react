@@ -6,7 +6,6 @@ import cn from "classnames";
 import Annotation from "./components/Annotation/Annotation";
 import { Header } from "./components/Header/Header";
 import { Popup } from "./components/Popup/Popup";
-import { useState } from "react";
 import { Menu } from "./components/Menu/Menu";
 import { CardsContainer } from "./components/CardsContainer/CardsContainer";
 import { Message } from "./components/Message/Message";
@@ -17,36 +16,20 @@ import {
   submitButtonStyle,
 } from "./utils/utils";
 import { observer } from "mobx-react-lite";
-import modeState from "./store/mode";
-import cardsState from "./store/cards";
-import langState from "./store/language";
-import curInterfaceState from "./store/interface";
+import modeState from "./store/modeState";
+import cardsState from "./store/cardsState";
+import curInterfaceState from "./store/interfaceState";
+import languageState from "./store/languageState";
 
 const App = observer(() => {
-  const {
-    switchMode,
-    currentVoc,
-    swithCurrentVoc,
-    askLang,
-    currentCard,
-    ansLang,
-    goAhead,
-    userAnswer,
-    setUserAnswer,
-    modalOpen,
-    cardsArrForQuiz,
-    wrongClicked,
-    systemMsg,
-    reset,
-  } = useMode(modeState, cardsState, langState, curInterfaceState);
-
-  const [menuOpen, setMenuOpen] = useState(false);
+  const { switchMode, swithCurrentVoc, goAhead, reset } = useMode(
+    modeState,
+    cardsState,
+    languageState,
+    curInterfaceState
+  );
 
   const submitButtonShown = isSubmitButtonShown(modeState.currentMode);
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
 
   // useEffect(() => {
   //   const onEnter = (e: { keyCode: number }) => {
@@ -68,28 +51,30 @@ const App = observer(() => {
           modeState.currentMode === Mode.QUIZ_ANSWER_CORRECT,
       })}
     >
-      {modalOpen && <div>модальное окно открыто</div>}
       <Popup
-        isOpen={menuOpen || !!systemMsg}
-        colorsInverted={!menuOpen}
-        onClose={!menuOpen ? reset : undefined}
+        isOpen={curInterfaceState.menuOpen || !!curInterfaceState.systemMsg}
+        colorsInverted={!curInterfaceState.menuOpen}
+        onClose={!curInterfaceState.menuOpen ? reset : undefined}
       >
-        {menuOpen ? (
+        {curInterfaceState.menuOpen ? (
           <Menu
             mode={modeState.currentMode}
-            currentVoc={currentVoc}
+            currentVoc={languageState.currentVoc}
             swithCurrentVoc={swithCurrentVoc}
             switchMode={switchMode}
           />
         ) : (
-          <Message title="Опрос окончен. Ваш результат:" text={systemMsg} />
+          <Message
+            title="Опрос окончен. Ваш результат:"
+            text={curInterfaceState.systemMsg}
+          />
         )}
       </Popup>
 
       <Header
-        onClickHandler={toggleMenu}
-        isMenuShown={menuOpen}
-        showMenuBtn={!systemMsg}
+        onClickHandler={() => curInterfaceState.toggleMenu()}
+        isMenuShown={curInterfaceState.menuOpen}
+        showMenuBtn={!curInterfaceState.systemMsg}
       />
       <main className="content">
         <Annotation
@@ -100,24 +85,17 @@ const App = observer(() => {
                 modeState.currentMode === Mode.QUIZ_ANSWER_CORRECT
               ? "Выберите правильный вариант перевода ..."
               : `Переведите на ${
-                  askLang === Lang.RU ? "английский" : "русский"
+                  languageState.askLang === Lang.RU ? "английский" : "русский"
                 } язык ...`
           }
           mainText={
-            modeState.currentMode === Mode.STUDY ? "" : currentCard[askLang]
+            modeState.currentMode === Mode.STUDY || !cardsState.currentCard
+              ? ""
+              : cardsState.currentCard[languageState.askLang]
           }
         />
 
-        <CardsContainer
-          mode={modeState.currentMode}
-          cardsArrForQuiz={cardsArrForQuiz}
-          currentCard={currentCard}
-          userAnswer={userAnswer}
-          ansLang={ansLang}
-          askLang={askLang}
-          wrongClicked={wrongClicked}
-          setUserAnswer={setUserAnswer}
-        />
+        {cardsState.currentCard && <CardsContainer />}
         <div>
           {!!submitButtonShown && (
             <SubmitButton

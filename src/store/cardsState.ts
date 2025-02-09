@@ -28,6 +28,25 @@ class Cards {
   addToWrongly(newCard: Card) {
     this.answeredWrongly.push(newCard);
   }
+
+  markAsAsked(card: Card) {
+    this.askedCards.push(card);
+  }
+
+  addToWrongClicked(id: Number) {
+    this.wrongClicked.push(id);
+  }
+
+  resetWrongClicked() {
+    this.wrongClicked = [];
+  }
+
+  reset() {
+    this.answeredCorrectly = [];
+    this.answeredCorrectly = [];
+    this.askedCards = [];
+    this.resetWrongClicked();
+  }
 }
 
 export default new Cards();
