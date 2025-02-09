@@ -5,33 +5,45 @@ import {
   getRandomArrElement,
   createRandomElemArr as createCardsArrForQuiz,
 } from "../utils/utils";
+import modeForType from "./../store/mode";
+import cardsForType from "./../store/cards";
+import langForType from "./../store/language";
+import curInterfaceForType from "./../store/interface";
 
-export default function useMode() {
-  const [mode, setMode] = useState<Mode>(Mode.STUDY);
+const useMode = (
+  modeState: typeof modeForType,
+  cardsState: typeof cardsForType,
+  langState: typeof langForType,
+  curInterfaceState: typeof curInterfaceForType
+) => {
+  // language
   const [currentVoc, setCurrentVoc] = useState<Vocaburary>(vocaburaries[0]);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const [askLang, setAskLang] = useState<Lang>(Lang.EN);
-  const [cardsArrForQuiz, setCardsArrForQuiz] = useState<Array<Card>>([]);
   const [ansLang, setAnsLang] = useState<Lang>(Lang.RU);
+  const [askLang, setAskLang] = useState<Lang>(Lang.EN);
+
+  // cards
+  const [cardsArrForQuiz, setCardsArrForQuiz] = useState<Array<Card>>([]);
   const [askedCards, setAskedCards] = useState<Card[]>([]);
-  const [userAnswer, setUserAnswer] = useState<string>("");
-  const [systemMsg, setSystemMsg] = useState<string>("");
-  const [answeredCorrectly, setAnsweredCorrectly] = useState<Card[]>([]);
   const [answeredWrongly, setAnsweredWrongly] = useState<Card[]>([]);
-  const [wrongClicked, setWrongClicked] = useState<Array<Number>>([]);
+  const [answeredCorrectly, setAnsweredCorrectly] = useState<Card[]>([]);
   const [currentCard, setCurrentCard] = useState<Card>(
     getRandomArrElement(currentVoc.cards, askedCards)
   );
+  const [wrongClicked, setWrongClicked] = useState<Array<Number>>([]);
+
+  // interface
+  const [systemMsg, setSystemMsg] = useState<string>("");
+  const [userAnswer, setUserAnswer] = useState<string>("");
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    if (mode !== Mode.QUIZ_QUESTION) return;
+    if (modeState.currentMode !== Mode.QUIZ_QUESTION) return;
     setCardsArrForQuiz(createCardsArrForQuiz(currentVoc.cards, 4, currentCard));
     // console.log("card array set", cardsArrForQuiz);
-  }, [mode]);
+  }, [modeState.currentMode]);
 
   useEffect(() => {
-    if (mode !== Mode.QUIZ_QUESTION) return;
+    if (modeState.currentMode !== Mode.QUIZ_QUESTION) return;
     goAhead();
   }, [userAnswer]);
 
@@ -45,17 +57,17 @@ export default function useMode() {
     ResetSystMsg();
     setWrongClicked([]);
     if (
-      mode === Mode.QUIZ_ANSWER_CORRECT ||
-      mode === Mode.QUIZ_ANSWER_INCORRECT
+      modeState.currentMode === Mode.QUIZ_ANSWER_CORRECT ||
+      modeState.currentMode === Mode.QUIZ_ANSWER_INCORRECT
     ) {
-      setMode(Mode.QUIZ_QUESTION);
+      modeState.switchMode(Mode.QUIZ_QUESTION);
       setCardsArrForQuiz(createCardsArrForQuiz(currentVoc.cards, 4, card));
     }
     if (
-      mode === Mode.EXAMINATION_ANSWER_CORRECT ||
-      mode === Mode.EXAMINATION_ANSWER_INCORRECT
+      modeState.currentMode === Mode.EXAMINATION_ANSWER_CORRECT ||
+      modeState.currentMode === Mode.EXAMINATION_ANSWER_INCORRECT
     ) {
-      setMode(Mode.QUIZ_QUESTION);
+      modeState.switchMode(Mode.QUIZ_QUESTION);
       setCardsArrForQuiz(createCardsArrForQuiz(currentVoc.cards, 4, card));
     }
   }
@@ -92,14 +104,14 @@ export default function useMode() {
     setSystemMsg("");
   }
 
-  function switchMode(mode: Mode) {
+  function switchMode(newMode: Mode) {
     reset();
-    setMode(mode);
+    modeState.switchMode(newMode);
   }
 
   function goAhead() {
     const card = getRandomArrElement(currentVoc.cards, askedCards);
-    switch (mode) {
+    switch (modeState.currentMode) {
       case Mode.EXAMINATION_ANSWER_CORRECT:
         if (askedCards.length === currentVoc.cards.length) {
           setSystemMsg(
@@ -110,7 +122,7 @@ export default function useMode() {
           return;
         }
         switchCard(card);
-        setMode(Mode.EXAMINATION_QUESTION);
+        modeState.switchMode(Mode.EXAMINATION_QUESTION);
         setUserAnswer("");
         break;
 
@@ -124,7 +136,7 @@ export default function useMode() {
         }
 
         switchCard(card);
-        setMode(Mode.EXAMINATION_QUESTION);
+        modeState.switchMode(Mode.EXAMINATION_QUESTION);
         setUserAnswer("");
         break;
       case Mode.EXAMINATION_QUESTION:
@@ -133,10 +145,10 @@ export default function useMode() {
           userAnswer.length > 0 &&
           currentCard[ansLang].toLowerCase().includes(userAnswer.toLowerCase())
         ) {
-          setMode(Mode.EXAMINATION_ANSWER_CORRECT);
+          modeState.switchMode(Mode.EXAMINATION_ANSWER_CORRECT);
           setAnsweredCorrectly((prev) => [...prev, currentCard]);
         } else {
-          setMode(Mode.EXAMINATION_ANSWER_INCORRECT);
+          modeState.switchMode(Mode.EXAMINATION_ANSWER_INCORRECT);
           setAnsweredWrongly((prev) => [...prev, currentCard]);
         }
 
@@ -151,7 +163,7 @@ export default function useMode() {
           return;
         }
         switchCard(card);
-        setMode(Mode.QUIZ_QUESTION);
+        modeState.switchMode(Mode.QUIZ_QUESTION);
         setUserAnswer("");
         setWrongClicked([]);
         break;
@@ -162,7 +174,7 @@ export default function useMode() {
           currentCard[ansLang].toLowerCase().includes(userAnswer.toLowerCase())
         ) {
           setAskedCards((prev) => [...prev, currentCard]);
-          setMode(Mode.QUIZ_ANSWER_CORRECT);
+          modeState.switchMode(Mode.QUIZ_ANSWER_CORRECT);
           wrongClicked.length > 0
             ? setAnsweredWrongly((prev) => [...prev, currentCard])
             : setAnsweredCorrectly((prev) => [...prev, currentCard]);
@@ -185,7 +197,6 @@ export default function useMode() {
   }
 
   return {
-    mode,
     switchMode,
     currentVoc,
     swithCurrentVoc,
@@ -204,4 +215,6 @@ export default function useMode() {
     systemMsg,
     reset,
   };
-}
+};
+
+export default useMode;

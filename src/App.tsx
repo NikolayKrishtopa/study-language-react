@@ -16,10 +16,14 @@ import {
   submitButtonType,
   submitButtonStyle,
 } from "./utils/utils";
+import { observer } from "mobx-react-lite";
+import modeState from "./store/mode";
+import cardsState from "./store/cards";
+import langState from "./store/language";
+import curInterfaceState from "./store/interface";
 
-function App() {
+const App = observer(() => {
   const {
-    mode,
     switchMode,
     currentVoc,
     swithCurrentVoc,
@@ -34,11 +38,11 @@ function App() {
     wrongClicked,
     systemMsg,
     reset,
-  } = useMode();
+  } = useMode(modeState, cardsState, langState, curInterfaceState);
 
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const submitButtonShown = isSubmitButtonShown(mode);
+  const submitButtonShown = isSubmitButtonShown(modeState.currentMode);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -60,8 +64,8 @@ function App() {
     <div
       className={cn("page", {
         page_correct:
-          mode === Mode.EXAMINATION_ANSWER_CORRECT ||
-          mode === Mode.QUIZ_ANSWER_CORRECT,
+          modeState.currentMode === Mode.EXAMINATION_ANSWER_CORRECT ||
+          modeState.currentMode === Mode.QUIZ_ANSWER_CORRECT,
       })}
     >
       {modalOpen && <div>модальное окно открыто</div>}
@@ -72,7 +76,7 @@ function App() {
       >
         {menuOpen ? (
           <Menu
-            mode={mode}
+            mode={modeState.currentMode}
             currentVoc={currentVoc}
             swithCurrentVoc={swithCurrentVoc}
             switchMode={switchMode}
@@ -90,19 +94,22 @@ function App() {
       <main className="content">
         <Annotation
           prefixText={
-            mode === Mode.STUDY
+            modeState.currentMode === Mode.STUDY
               ? "Постарайтесь запомнить как можно больше слов"
-              : mode === Mode.QUIZ_QUESTION || mode === Mode.QUIZ_ANSWER_CORRECT
+              : modeState.currentMode === Mode.QUIZ_QUESTION ||
+                modeState.currentMode === Mode.QUIZ_ANSWER_CORRECT
               ? "Выберите правильный вариант перевода ..."
               : `Переведите на ${
                   askLang === Lang.RU ? "английский" : "русский"
                 } язык ...`
           }
-          mainText={mode === Mode.STUDY ? "" : currentCard[askLang]}
+          mainText={
+            modeState.currentMode === Mode.STUDY ? "" : currentCard[askLang]
+          }
         />
 
         <CardsContainer
-          mode={mode}
+          mode={modeState.currentMode}
           cardsArrForQuiz={cardsArrForQuiz}
           currentCard={currentCard}
           userAnswer={userAnswer}
@@ -116,8 +123,8 @@ function App() {
             <SubmitButton
               id="submitBtn"
               onClick={goAhead}
-              type={submitButtonType(mode)}
-              state={submitButtonStyle(mode)}
+              type={submitButtonType(modeState.currentMode)}
+              state={submitButtonStyle(modeState.currentMode)}
             />
           )}
         </div>
@@ -125,6 +132,6 @@ function App() {
       <footer className="footer"></footer>
     </div>
   );
-}
+});
 
 export default App;
