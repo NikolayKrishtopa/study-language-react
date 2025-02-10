@@ -1,14 +1,14 @@
 import { makeAutoObservable } from "mobx";
-import { Mode as Modes } from "../models/models";
+import { Mode } from "../models/models";
 
-class Mode {
-  currentMode = Modes.STUDY;
+class ModeState {
+  currentMode = Mode.STUDY;
   constructor() {
     makeAutoObservable(this);
   }
-  switchMode(mode: Modes) {
+  switchMode(mode: Mode) {
     this.currentMode = mode;
   }
 }
 
-export default new Mode();
+export default new ModeState();

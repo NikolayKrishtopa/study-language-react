@@ -20,6 +20,7 @@ import modeState from "./store/modeState";
 import cardsState from "./store/cardsState";
 import curInterfaceState from "./store/interfaceState";
 import languageState from "./store/languageState";
+import copyright from "./utils/copyright";
 
 const App = observer(() => {
   const { switchMode, swithCurrentVoc, goAhead, reset } = useMode(
@@ -65,7 +66,7 @@ const App = observer(() => {
           />
         ) : (
           <Message
-            title="Опрос окончен. Ваш результат:"
+            title={copyright.resultMsg.ru}
             text={curInterfaceState.systemMsg}
           />
         )}
@@ -80,13 +81,15 @@ const App = observer(() => {
         <Annotation
           prefixText={
             modeState.currentMode === Mode.STUDY
-              ? "Постарайтесь запомнить как можно больше слов"
+              ? copyright.studyModeTitle.ru
               : modeState.currentMode === Mode.QUIZ_QUESTION ||
                 modeState.currentMode === Mode.QUIZ_ANSWER_CORRECT
-              ? "Выберите правильный вариант перевода ..."
-              : `Переведите на ${
-                  languageState.askLang === Lang.RU ? "английский" : "русский"
-                } язык ...`
+              ? copyright.quizModeTitle.ru
+              : `${copyright.translateTo.ru} ${
+                  languageState.askLang === Lang.RU
+                    ? copyright.languageName.en
+                    : copyright.languageName.ru
+                } ${copyright.language.ru}`
           }
           mainText={
             modeState.currentMode === Mode.STUDY || !cardsState.currentCard

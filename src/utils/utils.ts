@@ -1,5 +1,5 @@
 import { ISubmitButtonProps } from "../components/SubmitButton/SubmitButton.props";
-import { Mode } from "../models/models";
+import { Lang, Mode } from "../models/models";
 
 export function getRandomArrElement<T extends { id: Number }>(
   arr: Array<T>,
