@@ -5,11 +5,11 @@ export function getRandomArrElement<T extends { id: Number }>(
   arr: Array<T>,
   elementsToExclude?: Array<T>
 ): T {
-  const unusedCards = arr.filter(
+  const unusedElements = arr.filter(
     (el) => !elementsToExclude?.some((e) => e.id === el.id)
   );
   const randomCard =
-    unusedCards[Math.floor(Math.random() * unusedCards.length)];
+    unusedElements[Math.floor(Math.random() * unusedElements.length)];
   return randomCard;
 }
 

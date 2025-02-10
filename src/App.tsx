@@ -95,7 +95,7 @@ const App = observer(() => {
           }
         />
 
-        {cardsState.currentCard && <CardsContainer />}
+        <CardsContainer />
         <div>
           {!!submitButtonShown && (
             <SubmitButton

@@ -1,12 +1,17 @@
 import { makeAutoObservable } from "mobx";
 import { Card } from "../models/models";
+import languageState from "./languageState";
+import { getRandomArrElement } from "../utils/utils";
 
 class Cards {
   cardsArr: Array<Card> = [];
-  currentCard: undefined | Card = undefined;
   answeredCorrectly: Array<Card> = [];
   answeredWrongly: Array<Card> = [];
   askedCards: Array<Card> = [];
+  currentCard: Card = getRandomArrElement(
+    languageState.currentVoc.cards,
+    this.askedCards
+  );
   wrongClicked: Array<Number> = [];
 
   constructor() {

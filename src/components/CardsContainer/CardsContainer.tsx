@@ -22,7 +22,7 @@ export const CardsContainer = observer(() => {
 
   return (
     <div className="cards-container">
-      {isStudy && cardsState.currentCard && (
+      {isStudy && (
         <Card
           value={cardsState.currentCard[languageState.askLang]}
           mode="text"
@@ -57,7 +57,7 @@ export const CardsContainer = observer(() => {
       ) : (
         <Card
           value={
-            isTypeText && cardsState.currentCard
+            isTypeText
               ? cardsState.currentCard[languageState.ansLang]
               : curInterfaceState.userAnswer
           }
