@@ -10,6 +10,16 @@ export const Menu = ({
   swithCurrentVoc,
   switchMode,
 }: IMenuProps) => {
+  const isStudy =
+    mode === Mode.EXAMINATION_QUESTION ||
+    mode === Mode.EXAMINATION_ANSWER_CORRECT ||
+    mode === Mode.EXAMINATION_ANSWER_INCORRECT;
+
+  const isQuiz =
+    mode === Mode.QUIZ_QUESTION ||
+    mode === Mode.QUIZ_ANSWER_CORRECT ||
+    mode === Mode.QUIZ_ANSWER_INCORRECT;
+
   return (
     <div className="menu">
       <p className="menu__title">Выберите изучаемый словарь</p>
@@ -37,13 +47,9 @@ export const Menu = ({
           },
         ]}
         activeId={
-          mode === Mode.EXAMINATION_QUESTION ||
-          mode === Mode.EXAMINATION_ANSWER_CORRECT ||
-          mode === Mode.EXAMINATION_ANSWER_INCORRECT
+          isStudy
             ? Mode.EXAMINATION_QUESTION
-            : mode === Mode.QUIZ_QUESTION ||
-              mode === Mode.QUIZ_ANSWER_CORRECT ||
-              mode === Mode.QUIZ_ANSWER_INCORRECT
+            : isQuiz
             ? Mode.QUIZ_QUESTION
             : Mode.STUDY
         }
