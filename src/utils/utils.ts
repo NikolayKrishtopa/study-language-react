@@ -1,5 +1,5 @@
 import { ISubmitButtonProps } from "../components/SubmitButton/SubmitButton.props";
-import { Lang, Mode } from "../models/models";
+import { Mode } from "../models/models";
 
 export function getRandomArrElement<T extends { id: Number }>(
   arr: Array<T>,
@@ -26,26 +26,30 @@ export function addElemIntoArrWithRandomIndex<T>(
 export function createRandomElemArr<T extends { id: Number }>(
   sourceArr: Array<T>,
   resultArrLength: number,
-  elementToInclude?: T,
+  elementsToInclude?: Array<T>,
   elementsToExclude?: Array<T>
 ): Array<T> {
-  const supplCards = Array();
-  const randomCardsQtyNeeded = !!elementToInclude
-    ? resultArrLength - 1
-    : resultArrLength;
+  let supplCards = Array();
+  const randomCardsQtyNeeded =
+    !!elementsToInclude && elementsToInclude.length > 0
+      ? resultArrLength - elementsToInclude.length
+      : resultArrLength;
   while (supplCards.length < randomCardsQtyNeeded) {
     const card = getRandomArrElement(sourceArr, elementsToExclude || []);
     if (
-      !!elementToInclude &&
-      (card.id === elementToInclude.id ||
-        supplCards.some((e) => e.id === card.id))
+      (!!elementsToInclude &&
+        elementsToInclude.some((e) => e.id === card.id)) ||
+      supplCards.some((e) => e.id === card.id)
     )
       continue;
     supplCards.push(card);
   }
-  return !!elementToInclude
-    ? addElemIntoArrWithRandomIndex(supplCards, elementToInclude)
-    : supplCards;
+  if (elementsToInclude) {
+    elementsToInclude.forEach((e) => {
+      supplCards = addElemIntoArrWithRandomIndex(supplCards, e);
+    });
+  }
+  return supplCards;
 }
 
 export const isSubmitButtonShown = (mode: Mode) => {

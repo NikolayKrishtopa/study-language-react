@@ -23,11 +23,9 @@ const useMode = (
   useEffect(() => {
     if (modeState.currentMode !== Mode.QUIZ_QUESTION) return;
     cardsState.setCardsArr(
-      createCardsArrForQuiz(
-        langState.currentVoc.cards,
-        4,
-        cardsState.currentCard
-      )
+      createCardsArrForQuiz(langState.currentVoc.cards, 4, [
+        cardsState.currentCard,
+      ])
     );
   }, [modeState.currentMode]);
 
@@ -47,7 +45,7 @@ const useMode = (
     ) {
       modeState.switchMode(Mode.QUIZ_QUESTION);
       cardsState.setCardsArr(
-        createCardsArrForQuiz(langState.currentVoc.cards, 4, card)
+        createCardsArrForQuiz(langState.currentVoc.cards, 4, [card])
       );
     }
     if (
@@ -56,7 +54,7 @@ const useMode = (
     ) {
       modeState.switchMode(Mode.QUIZ_QUESTION);
       cardsState.setCardsArr(
-        createCardsArrForQuiz(langState.currentVoc.cards, 4, card)
+        createCardsArrForQuiz(langState.currentVoc.cards, 4, [card])
       );
     }
   }

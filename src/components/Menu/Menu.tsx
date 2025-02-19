@@ -3,6 +3,7 @@ import vocaburaries from "../../vocaburaries/vocaburaries";
 import { ButtonSwitcher } from "../ButtonSwitcher/ButtonSwitcher";
 import { IMenuProps } from "./Menu.props";
 import "./Menu.scss";
+import copyright from "../../utils/copyright";
 
 export const Menu = ({
   mode,
@@ -34,15 +35,19 @@ export const Menu = ({
       />
       <ButtonSwitcher
         buttons={[
-          { id: Mode.STUDY, text: "Изучение", value: Mode.STUDY },
+          {
+            id: Mode.STUDY,
+            text: copyright.modeName.study.ru,
+            value: Mode.STUDY,
+          },
           {
             id: Mode.EXAMINATION_QUESTION,
-            text: "Опрос",
+            text: copyright.modeName.exam.ru,
             value: Mode.EXAMINATION_QUESTION,
           },
           {
             id: Mode.QUIZ_QUESTION,
-            text: "Тест",
+            text: copyright.modeName.quiz.ru,
             value: Mode.QUIZ_QUESTION,
           },
         ]}

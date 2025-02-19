@@ -31,6 +31,20 @@ const copyright = {
     [Lang.RU]: "Опрос окончен. Ваш результат:",
     [Lang.EN]: "Quiz is done. Your result is",
   },
+  modeName: {
+    study: {
+      [Lang.RU]: "Изучение",
+      [Lang.EN]: "Study",
+    },
+    exam: {
+      [Lang.RU]: "Опрос",
+      [Lang.EN]: "Exam",
+    },
+    quiz: {
+      [Lang.RU]: "Тест",
+      [Lang.EN]: "Test",
+    },
+  },
 };
 
 export default copyright;
