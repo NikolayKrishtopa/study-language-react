@@ -1,7 +1,7 @@
 import { ISubmitButtonProps } from "../components/SubmitButton/SubmitButton.props";
 import { Mode } from "../models/models";
 
-export function getRandomArrElement<T extends { id: Number }>(
+export function getRandomArrElement<T extends { id: number }>(
   arr: Array<T>,
   elementsToExclude?: Array<T>
 ): T {
@@ -23,13 +23,13 @@ export function addElemIntoArrWithRandomIndex<T>(
   return resultArr;
 }
 
-export function createRandomElemArr<T extends { id: Number }>(
+export function createRandomElemArr<T extends { id: number }>(
   sourceArr: Array<T>,
   resultArrLength: number,
   elementsToInclude?: Array<T>,
   elementsToExclude?: Array<T>
 ): Array<T> {
-  let supplCards = Array();
+  let supplCards: Array<T> = [];
   const randomCardsQtyNeeded =
     !!elementsToInclude && elementsToInclude.length > 0
       ? resultArrLength - elementsToInclude.length

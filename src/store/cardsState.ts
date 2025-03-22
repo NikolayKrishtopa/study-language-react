@@ -12,7 +12,7 @@ class Cards {
     languageState.currentVoc.cards,
     this.askedCards
   );
-  wrongClicked: Array<Number> = [];
+  wrongClicked: Array<number> = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -38,7 +38,7 @@ class Cards {
     this.askedCards.push(card);
   }
 
-  addToWrongClicked(id: Number) {
+  addToWrongClicked(id: number) {
     this.wrongClicked.push(id);
   }
 

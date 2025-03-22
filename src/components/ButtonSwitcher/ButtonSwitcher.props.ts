@@ -2,7 +2,7 @@ import { Mode } from "../../models/models";
 
 export interface IButtonSwitcherProps {
   switchHandler: (mode: Mode) => void;
-  buttons: Array<unknown extends {id:number}>;
+  buttons: Array<any & { id: number }>;
   activeId?: number | string;
   additionalClass?: string;
 }

@@ -172,9 +172,11 @@ const useMode = (
         ) {
           cardsState.markAsAsked(cardsState.currentCard);
           modeState.switchMode(Mode.QUIZ_ANSWER_CORRECT);
-          cardsState.wrongClicked.length > 0
-            ? cardsState.addToWrongly(cardsState.currentCard)
-            : cardsState.addToCorrectly(cardsState.currentCard);
+          if (cardsState.wrongClicked.length > 0) {
+            cardsState.addToWrongly(cardsState.currentCard);
+          } else {
+            cardsState.addToCorrectly(cardsState.currentCard);
+          }
         } else {
           const clickedCard = cardsState.cardsArr.find(
             (e) =>
