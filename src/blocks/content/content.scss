@@ -9,11 +9,17 @@
   grid-template-rows: 200px 1fr;
   gap: 30px;
   justify-items: center;
-  @media screen and (max-width: $breakpointDesktop) {
+  @media screen and (max-width: $breakpointDesktopLarge) {
     padding: 50px 100px 250px;
+  }
+  @media screen and (max-width: $breakpointDesktop) {
     grid-template-rows: 150px 1fr;
+    justify-items: end;
   }
   @media screen and (max-width: $breakpointDesktopSmall) {
-    padding: 50px 100px 250px;
+    padding: 50px 70px 150px;
+  }
+  @media screen and (max-width: $breakpointTablet) {
+    padding: 50px 50px 100px;
   }
 }

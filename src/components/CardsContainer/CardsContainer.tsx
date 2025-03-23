@@ -6,6 +6,7 @@ import cardsState from "./../../store/cardsState";
 import curInterfaceState from "./../../store/interfaceState";
 import languageState from "./../../store/languageState";
 import { observer } from "mobx-react-lite";
+import cn from "classnames";
 
 export const CardsContainer = observer(() => {
   const isStudy = modeState.currentMode === Mode.STUDY;
@@ -21,7 +22,9 @@ export const CardsContainer = observer(() => {
     modeState.currentMode === Mode.EXAMINATION_ANSWER_INCORRECT;
 
   return (
-    <div className="cards-container">
+    <div
+      className={cn("cards-container", { "cards-container_one-row": isStudy })}
+    >
       {isStudy && (
         <Card
           value={cardsState.currentCard[languageState.askLang]}

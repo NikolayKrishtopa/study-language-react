@@ -28,4 +28,10 @@
   &_fail {
     background-color: $failure;
   }
+  @media screen and (max-width: $breakpointDesktopLarge) {
+    bottom: 15%;
+  }
+  @media screen and (max-width: $breakpointDesktopSmall) {
+    bottom: 12%;
+  }
 }

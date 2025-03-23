@@ -22,6 +22,12 @@
     align-items: flex-end;
     padding-bottom: 100px;
     padding-left: 100px;
+    @media (max-width: $breakpointDesktopSmall) {
+      width: 500px;
+      height: 500px;
+      top: -450px;
+      left: -300px;
+    }
   }
   &__menuBtn {
     position: absolute;
@@ -30,18 +36,12 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
-    z-index: 3;
+    z-index: 4;
   }
   &__btnImage {
     transition: transform 0.3s linear;
   }
   &BtnImageActivated {
     transform: rotate(90deg);
-  }
-}
-
-@media (max-height: 800px) {
-  .header {
-    height: 0;
   }
 }

@@ -14,9 +14,11 @@
   align-items: flex-end;
   padding-bottom: 100px;
   padding-left: 100px;
-  @media screen and (max-width: $breakpointDesktop) {
-    bottom: -500px;
-  }
   @media screen and (max-width: $breakpointDesktopSmall) {
+    bottom: -450px;
+  }
+  @media screen and (max-width: $breakpointTablet) {
+    bottom: -500px;
+    right: -300px;
   }
 }
