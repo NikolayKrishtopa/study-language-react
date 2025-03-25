@@ -6,7 +6,7 @@
   font-weight: bold;
   color: rgb(197, 227, 230);
   display: grid;
-  grid-template-rows: 200px 1fr;
+  grid-template-rows: 150px 1fr;
   gap: 30px;
   justify-items: center;
   @media screen and (max-width: $breakpointDesktopLarge) {
@@ -20,6 +20,16 @@
     padding: 50px 70px 150px;
   }
   @media screen and (max-width: $breakpointTablet) {
+    grid-template-rows: 100px 1fr;
     padding: 50px 50px 100px;
+    gap: 20px;
+  }
+  @media screen and (max-width: $breakpointMobile) {
+    padding: 70px 20px 100px;
+  }
+  @media screen and (max-width: $breakpointMobileSmall) {
+    padding: 70px 20px 100px;
+    grid-template-rows: 70px 1fr;
+    gap: 10px;
   }
 }

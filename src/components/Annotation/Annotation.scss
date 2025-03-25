@@ -12,6 +12,9 @@
     justify-self: end;
     max-width: 600px;
   }
+  @media (max-width: $breakpointDesktopSmall) {
+    max-width: unset;
+  }
   &__prefix-text {
     font-family: "Pacifico";
     color: $black;
@@ -21,6 +24,10 @@
     @media (max-width: $breakpointTablet) {
       font-size: 24px;
       line-height: 30px;
+    }
+    @media (max-width: $breakpointMobileSmall) {
+      font-size: 18px;
+      line-height: 24px;
     }
   }
   &__main-text {
@@ -33,6 +40,10 @@
     @media (max-width: $breakpointTablet) {
       font-size: 32px;
       line-height: 40px;
+    }
+    @media (max-width: $breakpointMobileSmall) {
+      font-size: 24px;
+      line-height: 28px;
     }
     &_scss {
       color: $success;

@@ -11,7 +11,7 @@
   justify-content: center;
   position: absolute;
   right: 30px;
-  bottom: 25%;
+  bottom: 250px;
   &:hover {
     opacity: 90%;
     cursor: pointer;
@@ -29,9 +29,14 @@
     background-color: $failure;
   }
   @media screen and (max-width: $breakpointDesktopLarge) {
-    bottom: 15%;
+    bottom: 150px;
   }
   @media screen and (max-width: $breakpointDesktopSmall) {
-    bottom: 12%;
+    bottom: 90px;
+    transform: scale(0.75);
+  }
+  @media screen and (max-width: $breakpointMobile) {
+    transform: scale(0.5);
+    right: 5px;
   }
 }

@@ -4,6 +4,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   &__button {
     margin: 20px 5px;
     /* display: block; */

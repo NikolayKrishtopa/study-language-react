@@ -7,6 +7,12 @@
     font-family: "Pacifico";
     color: $white;
     font-size: 40px;
+    @media (max-width: $breakpointDesktopSmall) {
+      font-size: 24px;
+    }
+    @media (max-width: $breakpointMobile) {
+      font-size: 18px;
+    }
   }
   &__round {
     width: 600px;
@@ -25,8 +31,12 @@
     @media (max-width: $breakpointDesktopSmall) {
       width: 500px;
       height: 500px;
+      padding-bottom: 50px;
+    }
+    @media (max-width: $breakpointMobile) {
       top: -450px;
-      left: -300px;
+      padding-bottom: 18px;
+      padding-left: 50px;
     }
   }
   &__menuBtn {
@@ -37,6 +47,10 @@
     border: none;
     cursor: pointer;
     z-index: 4;
+    @media (max-width: $breakpointMobile) {
+      top: 20px;
+      right: 20px;
+    }
   }
   &__btnImage {
     transition: transform 0.3s linear;

@@ -15,9 +15,25 @@
   text-align: center;
   outline: none;
   border: none;
-  max-height: 300px;
+  @media (max-width: $breakpointDesktopSmall) {
+    font-size: 24px;
+  }
+  @media (max-width: $breakpointMobile) {
+    padding: 15px;
+  }
+  @media (max-width: $breakpointMobileSmall) {
+    font-size: 18px;
+  }
+
   &_text_s {
     font-size: 30px;
+    @media (max-width: $breakpointDesktopSmall) {
+      font-size: 18px;
+    }
+
+    @media (max-width: $breakpointMobileSmall) {
+      font-size: 12px;
+    }
   }
   &_state_correct {
     border: 10px solid $success;

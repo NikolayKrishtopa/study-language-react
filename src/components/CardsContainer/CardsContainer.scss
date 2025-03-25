@@ -1,12 +1,20 @@
+@use "../../styles/globalVariables.scss" as *;
 .cards-container {
   width: 100%;
   max-width: 1200px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  max-height: 620px;
+  max-height: 500px;
   gap: 20px;
   &_one-row {
     grid-template-rows: 1fr;
+    max-height: 300px;
+    @media screen and (max-width: $breakpointDesktopSmall) {
+      max-height: 200px;
+    }
+  }
+  @media screen and (max-width: $breakpointDesktopSmall) {
+    max-height: 400px;
   }
 }
